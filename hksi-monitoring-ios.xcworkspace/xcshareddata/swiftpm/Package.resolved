@@ -1,0 +1,33 @@
+{
+  "originHash" : "d653b148b57db7e16567d55d0be1d9a65049ef829a850b5e44a7b70864e0f8b0",
+  "pins" : [
+    {
+      "identity" : "observableuserdefault",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/davidsteppenbeck/ObservableUserDefault",
+      "state" : {
+        "revision" : "d0d9f23666f699857cabf08d558d3000dc3e9713",
+        "version" : "1.3.1"
+      }
+    },
+    {
+      "identity" : "swift-dotenv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/thebarndog/swift-dotenv",
+      "state" : {
+        "revision" : "f6e7ca817d35eeccb20b62c87ee75963b01b29dc",
+        "version" : "2.0.1"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax.git",
+      "state" : {
+        "revision" : "303e5c5c36d6a558407d364878df131c3546fad8",
+        "version" : "510.0.2"
+      }
+    }
+  ],
+  "version" : 3
+}

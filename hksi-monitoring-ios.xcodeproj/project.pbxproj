@@ -7,20 +7,118 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4BC68348C1092FBCE2297E31 /* Pods_hksi_monitoring_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */; };
+		F3065C722C9DD78E00B442AA /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3065C712C9DD78E00B442AA /* DataModel.swift */; };
 		F30F65142C5389590060EA56 /* hksi_monitoring_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65132C5389590060EA56 /* hksi_monitoring_iosApp.swift */; };
-		F30F65162C5389590060EA56 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65152C5389590060EA56 /* ContentView.swift */; };
-		F30F65182C5389590060EA56 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65172C5389590060EA56 /* Item.swift */; };
 		F30F651A2C53895A0060EA56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F30F65192C53895A0060EA56 /* Assets.xcassets */; };
 		F30F651D2C53895A0060EA56 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F30F651C2C53895A0060EA56 /* Preview Assets.xcassets */; };
+		F30F65472C538A630060EA56 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F30F653C2C538A600060EA56 /* README.md */; };
+		F30F65482C538A630060EA56 /* libQNDeviceSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F30F65432C538A630060EA56 /* libQNDeviceSDK.a */; };
+		F30F65572C5391C20060EA56 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F654F2C5391C20060EA56 /* Features.swift */; };
+		F30F65582C5391C20060EA56 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65502C5391C20060EA56 /* Camera.swift */; };
+		F30F655A2C5391C20060EA56 /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65522C5391C20060EA56 /* CameraModel.swift */; };
+		F30F655E2C5391C20060EA56 /* RouteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65562C5391C20060EA56 /* RouteModel.swift */; };
+		F30F65602C53928B0060EA56 /* QNScaleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F655F2C53928B0060EA56 /* QNScaleModel.swift */; };
+		F30F65642C5393050060EA56 /* ObservableUserDefault in Frameworks */ = {isa = PBXBuildFile; productRef = F30F65632C5393050060EA56 /* ObservableUserDefault */; };
+		F30F656F2C53940F0060EA56 /* SwiftDotenv in Frameworks */ = {isa = PBXBuildFile; productRef = F30F656E2C53940F0060EA56 /* SwiftDotenv */; };
+		F30F65762C5394A60060EA56 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65702C5394A60060EA56 /* CameraView.swift */; };
+		F30F65772C5394A60060EA56 /* FeatureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65712C5394A60060EA56 /* FeatureIcon.swift */; };
+		F30F65782C5394A60060EA56 /* FeatureSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65722C5394A60060EA56 /* FeatureSection.swift */; };
+		F30F65792C5394A60060EA56 /* ScaleDeviceButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65732C5394A60060EA56 /* ScaleDeviceButtonLabel.swift */; };
+		F30F657A2C5394A60060EA56 /* ViewfinderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65742C5394A60060EA56 /* ViewfinderView.swift */; };
+		F30F65862C5394B20060EA56 /* 123456789.qn in Resources */ = {isa = PBXBuildFile; fileRef = F30F657B2C5394B20060EA56 /* 123456789.qn */; };
+		F30F65872C5394B20060EA56 /* Environments.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F657E2C5394B20060EA56 /* Environments.swift */; };
+		F30F65882C5394B20060EA56 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F657F2C5394B20060EA56 /* Logger.swift */; };
+		F30F65892C5394B20060EA56 /* ResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65812C5394B20060EA56 /* ResultScreen.swift */; };
+		F30F658A2C5394B20060EA56 /* ScanningScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65822C5394B20060EA56 /* ScanningScreen.swift */; };
+		F30F658B2C5394B20060EA56 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65832C5394B20060EA56 /* SettingsScreen.swift */; };
+		F30F658C2C5394B20060EA56 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65842C5394B20060EA56 /* WelcomeScreen.swift */; };
+		F30F65922C55CB460060EA56 /* RTCSimulatorVideoDecoderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F658E2C55CB450060EA56 /* RTCSimulatorVideoDecoderFactory.swift */; };
+		F30F65932C55CB460060EA56 /* RTCCustomFrameCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F658F2C55CB450060EA56 /* RTCCustomFrameCapture.swift */; };
+		F30F65942C55CB460060EA56 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65902C55CB460060EA56 /* WebRTCClient.swift */; };
+		F30F65952C55CB460060EA56 /* RTCSimluatorVideoEncoderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65912C55CB460060EA56 /* RTCSimluatorVideoEncoderFactory.swift */; };
+		F30F65972C55D1940060EA56 /* WebRTCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65962C55D1940060EA56 /* WebRTCModel.swift */; };
+		F30F65992C55DA9C0060EA56 /* SignalingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65982C55DA9C0060EA56 /* SignalingMessage.swift */; };
+		F30F659B2C56017F0060EA56 /* WebRTCTestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F659A2C56017F0060EA56 /* WebRTCTestScreen.swift */; };
+		F358DCE02CA19EAE00093389 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = F358DCDF2CA19EAE00093389 /* ButtonStyles.swift */; };
+		F392260F2CBA840F001B7B68 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F392260E2CBA840F001B7B68 /* Errors.swift */; };
+		F3E6E2C52CBD17DB00E2BA4C /* test123456789.qn in Resources */ = {isa = PBXBuildFile; fileRef = F3E6E2C32CBD17DB00E2BA4C /* test123456789.qn */; };
+		F3E6E2C62CBD17DB00E2BA4C /* XGKJ202410.qn in Resources */ = {isa = PBXBuildFile; fileRef = F3E6E2C42CBD17DB00E2BA4C /* XGKJ202410.qn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F30F65102C5389590060EA56 /* hksi-monitoring-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "hksi-monitoring-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		34A2103441AE4E9E2D05BB69 /* Pods-hksi-monitoring-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hksi-monitoring-ios.release.xcconfig"; path = "Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios.release.xcconfig"; sourceTree = "<group>"; };
+		A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hksi_monitoring_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE7315ED3CFB9D595702F694 /* Pods-hksi-monitoring-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hksi-monitoring-ios.debug.xcconfig"; path = "Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		F3065C712C9DD78E00B442AA /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		F30F65102C5389590060EA56 /* HKSI Booth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HKSI Booth.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F30F65132C5389590060EA56 /* hksi_monitoring_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hksi_monitoring_iosApp.swift; sourceTree = "<group>"; };
-		F30F65152C5389590060EA56 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		F30F65172C5389590060EA56 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F30F65192C53895A0060EA56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F30F651C2C53895A0060EA56 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F30F65242C538A5F0060EA56 /* QNWspScaleDataProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNWspScaleDataProtocol.h; sourceTree = "<group>"; };
+		F30F65252C538A5F0060EA56 /* QNBleConnectionChangeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleConnectionChangeProtocol.h; sourceTree = "<group>"; };
+		F30F65262C538A5F0060EA56 /* QNScaleItemData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNScaleItemData.h; sourceTree = "<group>"; };
+		F30F65272C538A5F0060EA56 /* QNUserScaleConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNUserScaleConfig.h; sourceTree = "<group>"; };
+		F30F65282C538A5F0060EA56 /* QNConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNConfig.h; sourceTree = "<group>"; };
+		F30F65292C538A5F0060EA56 /* QNBleDeviceDiscoveryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleDeviceDiscoveryProtocol.h; sourceTree = "<group>"; };
+		F30F652A2C538A5F0060EA56 /* QNIndicateConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNIndicateConfig.h; sourceTree = "<group>"; };
+		F30F652B2C538A5F0060EA56 /* QNBleRulerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleRulerProtocol.h; sourceTree = "<group>"; };
+		F30F652C2C538A5F0060EA56 /* QNWspConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNWspConfig.h; sourceTree = "<group>"; };
+		F30F652D2C538A5F0060EA56 /* QNBleKitchenConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleKitchenConfig.h; sourceTree = "<group>"; };
+		F30F652E2C538A5F0060EA56 /* QNErrorCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNErrorCode.h; sourceTree = "<group>"; };
+		F30F652F2C538A5F0060EA56 /* QNDeviceSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNDeviceSDK.h; sourceTree = "<group>"; };
+		F30F65302C538A5F0060EA56 /* QNBleKitchenDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleKitchenDevice.h; sourceTree = "<group>"; };
+		F30F65312C538A5F0060EA56 /* QNBleRulerDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleRulerDevice.h; sourceTree = "<group>"; };
+		F30F65322C538A5F0060EA56 /* QNBleApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleApi.h; sourceTree = "<group>"; };
+		F30F65332C538A5F0060EA56 /* QNBleStateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleStateProtocol.h; sourceTree = "<group>"; };
+		F30F65342C538A5F0060EA56 /* QNBleBroadcastDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleBroadcastDevice.h; sourceTree = "<group>"; };
+		F30F65352C538A5F0060EA56 /* QNBleKitchenProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleKitchenProtocol.h; sourceTree = "<group>"; };
+		F30F65362C538A600060EA56 /* QNLogProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNLogProtocol.h; sourceTree = "<group>"; };
+		F30F65372C538A600060EA56 /* QNScaleData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNScaleData.h; sourceTree = "<group>"; };
+		F30F65382C538A600060EA56 /* QNBleOTAConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleOTAConfig.h; sourceTree = "<group>"; };
+		F30F65392C538A600060EA56 /* QNBleRulerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleRulerData.h; sourceTree = "<group>"; };
+		F30F653A2C538A600060EA56 /* QNUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNUser.h; sourceTree = "<group>"; };
+		F30F653B2C538A600060EA56 /* QNWiFiConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNWiFiConfig.h; sourceTree = "<group>"; };
+		F30F653C2C538A600060EA56 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F30F653D2C538A600060EA56 /* QNBleProtocolDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleProtocolDelegate.h; sourceTree = "<group>"; };
+		F30F653E2C538A600060EA56 /* QNUserScaleDataProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNUserScaleDataProtocol.h; sourceTree = "<group>"; };
+		F30F653F2C538A600060EA56 /* QNCallBackConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNCallBackConst.h; sourceTree = "<group>"; };
+		F30F65402C538A600060EA56 /* QNUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNUtils.h; sourceTree = "<group>"; };
+		F30F65412C538A600060EA56 /* QNBleOTAProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleOTAProtocol.h; sourceTree = "<group>"; };
+		F30F65422C538A600060EA56 /* QNScaleStoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNScaleStoreData.h; sourceTree = "<group>"; };
+		F30F65432C538A630060EA56 /* libQNDeviceSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libQNDeviceSDK.a; sourceTree = "<group>"; };
+		F30F65442C538A630060EA56 /* QNBleDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleDevice.h; sourceTree = "<group>"; };
+		F30F65452C538A630060EA56 /* QNBleProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNBleProtocolHandler.h; sourceTree = "<group>"; };
+		F30F65462C538A630060EA56 /* QNScaleDataProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNScaleDataProtocol.h; sourceTree = "<group>"; };
+		F30F654E2C538F560060EA56 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F30F654F2C5391C20060EA56 /* Features.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
+		F30F65502C5391C20060EA56 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		F30F65522C5391C20060EA56 /* CameraModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
+		F30F65562C5391C20060EA56 /* RouteModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteModel.swift; sourceTree = "<group>"; };
+		F30F655F2C53928B0060EA56 /* QNScaleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNScaleModel.swift; sourceTree = "<group>"; };
+		F30F65702C5394A60060EA56 /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		F30F65712C5394A60060EA56 /* FeatureIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureIcon.swift; sourceTree = "<group>"; };
+		F30F65722C5394A60060EA56 /* FeatureSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureSection.swift; sourceTree = "<group>"; };
+		F30F65732C5394A60060EA56 /* ScaleDeviceButtonLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaleDeviceButtonLabel.swift; sourceTree = "<group>"; };
+		F30F65742C5394A60060EA56 /* ViewfinderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewfinderView.swift; sourceTree = "<group>"; };
+		F30F657B2C5394B20060EA56 /* 123456789.qn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 123456789.qn; sourceTree = "<group>"; };
+		F30F657E2C5394B20060EA56 /* Environments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environments.swift; sourceTree = "<group>"; };
+		F30F657F2C5394B20060EA56 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		F30F65812C5394B20060EA56 /* ResultScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultScreen.swift; sourceTree = "<group>"; };
+		F30F65822C5394B20060EA56 /* ScanningScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningScreen.swift; sourceTree = "<group>"; };
+		F30F65832C5394B20060EA56 /* SettingsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		F30F65842C5394B20060EA56 /* WelcomeScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
+		F30F658E2C55CB450060EA56 /* RTCSimulatorVideoDecoderFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTCSimulatorVideoDecoderFactory.swift; sourceTree = "<group>"; };
+		F30F658F2C55CB450060EA56 /* RTCCustomFrameCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTCCustomFrameCapture.swift; sourceTree = "<group>"; };
+		F30F65902C55CB460060EA56 /* WebRTCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
+		F30F65912C55CB460060EA56 /* RTCSimluatorVideoEncoderFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RTCSimluatorVideoEncoderFactory.swift; sourceTree = "<group>"; };
+		F30F65962C55D1940060EA56 /* WebRTCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCModel.swift; sourceTree = "<group>"; };
+		F30F65982C55DA9C0060EA56 /* SignalingMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalingMessage.swift; sourceTree = "<group>"; };
+		F30F659A2C56017F0060EA56 /* WebRTCTestScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCTestScreen.swift; sourceTree = "<group>"; };
+		F358DCDF2CA19EAE00093389 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		F392260E2CBA840F001B7B68 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		F3E6E2C32CBD17DB00E2BA4C /* test123456789.qn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test123456789.qn; sourceTree = "<group>"; };
+		F3E6E2C42CBD17DB00E2BA4C /* XGKJ202410.qn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XGKJ202410.qn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,24 +126,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F30F65482C538A630060EA56 /* libQNDeviceSDK.a in Frameworks */,
+				4BC68348C1092FBCE2297E31 /* Pods_hksi_monitoring_ios.framework in Frameworks */,
+				F30F656F2C53940F0060EA56 /* SwiftDotenv in Frameworks */,
+				F30F65642C5393050060EA56 /* ObservableUserDefault in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5198C2BADAFEA2060EFC4EEC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F30F65072C5389590060EA56 = {
 			isa = PBXGroup;
 			children = (
+				F30F654E2C538F560060EA56 /* README.md */,
+				F30F65232C538A390060EA56 /* QNSDK */,
 				F30F65122C5389590060EA56 /* hksi-monitoring-ios */,
 				F30F65112C5389590060EA56 /* Products */,
+				FBE4D2FDE6EAB6ADC72C49CF /* Pods */,
+				5198C2BADAFEA2060EFC4EEC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		F30F65112C5389590060EA56 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F30F65102C5389590060EA56 /* hksi-monitoring-ios.app */,
+				F30F65102C5389590060EA56 /* HKSI Booth.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,9 +167,16 @@
 		F30F65122C5389590060EA56 /* hksi-monitoring-ios */ = {
 			isa = PBXGroup;
 			children = (
+				F3E6E2C32CBD17DB00E2BA4C /* test123456789.qn */,
+				F30F657B2C5394B20060EA56 /* 123456789.qn */,
+				F3E6E2C42CBD17DB00E2BA4C /* XGKJ202410.qn */,
+				F358DCDE2CA19EA300093389 /* Styles */,
+				F30F657D2C5394B20060EA56 /* Resources */,
+				F30F65852C5394B20060EA56 /* Screens */,
+				F30F65802C5394B20060EA56 /* Utils */,
+				F30F65752C5394A60060EA56 /* Components */,
+				F30F65492C538C130060EA56 /* Models */,
 				F30F65132C5389590060EA56 /* hksi_monitoring_iosApp.swift */,
-				F30F65152C5389590060EA56 /* ContentView.swift */,
-				F30F65172C5389590060EA56 /* Item.swift */,
 				F30F65192C53895A0060EA56 /* Assets.xcassets */,
 				F30F651B2C53895A0060EA56 /* Preview Content */,
 			);
@@ -70,6 +191,141 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		F30F65232C538A390060EA56 /* QNSDK */ = {
+			isa = PBXGroup;
+			children = (
+				F30F65432C538A630060EA56 /* libQNDeviceSDK.a */,
+				F30F65322C538A5F0060EA56 /* QNBleApi.h */,
+				F30F65342C538A5F0060EA56 /* QNBleBroadcastDevice.h */,
+				F30F65252C538A5F0060EA56 /* QNBleConnectionChangeProtocol.h */,
+				F30F65442C538A630060EA56 /* QNBleDevice.h */,
+				F30F65292C538A5F0060EA56 /* QNBleDeviceDiscoveryProtocol.h */,
+				F30F652D2C538A5F0060EA56 /* QNBleKitchenConfig.h */,
+				F30F65302C538A5F0060EA56 /* QNBleKitchenDevice.h */,
+				F30F65352C538A5F0060EA56 /* QNBleKitchenProtocol.h */,
+				F30F65382C538A600060EA56 /* QNBleOTAConfig.h */,
+				F30F65412C538A600060EA56 /* QNBleOTAProtocol.h */,
+				F30F653D2C538A600060EA56 /* QNBleProtocolDelegate.h */,
+				F30F65452C538A630060EA56 /* QNBleProtocolHandler.h */,
+				F30F65392C538A600060EA56 /* QNBleRulerData.h */,
+				F30F65312C538A5F0060EA56 /* QNBleRulerDevice.h */,
+				F30F652B2C538A5F0060EA56 /* QNBleRulerProtocol.h */,
+				F30F65332C538A5F0060EA56 /* QNBleStateProtocol.h */,
+				F30F653F2C538A600060EA56 /* QNCallBackConst.h */,
+				F30F65282C538A5F0060EA56 /* QNConfig.h */,
+				F30F652F2C538A5F0060EA56 /* QNDeviceSDK.h */,
+				F30F652E2C538A5F0060EA56 /* QNErrorCode.h */,
+				F30F652A2C538A5F0060EA56 /* QNIndicateConfig.h */,
+				F30F65362C538A600060EA56 /* QNLogProtocol.h */,
+				F30F65372C538A600060EA56 /* QNScaleData.h */,
+				F30F65462C538A630060EA56 /* QNScaleDataProtocol.h */,
+				F30F65262C538A5F0060EA56 /* QNScaleItemData.h */,
+				F30F65422C538A600060EA56 /* QNScaleStoreData.h */,
+				F30F653A2C538A600060EA56 /* QNUser.h */,
+				F30F65272C538A5F0060EA56 /* QNUserScaleConfig.h */,
+				F30F653E2C538A600060EA56 /* QNUserScaleDataProtocol.h */,
+				F30F65402C538A600060EA56 /* QNUtils.h */,
+				F30F653B2C538A600060EA56 /* QNWiFiConfig.h */,
+				F30F652C2C538A5F0060EA56 /* QNWspConfig.h */,
+				F30F65242C538A5F0060EA56 /* QNWspScaleDataProtocol.h */,
+				F30F653C2C538A600060EA56 /* README.md */,
+			);
+			path = QNSDK;
+			sourceTree = "<group>";
+		};
+		F30F65492C538C130060EA56 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F30F658D2C55CB190060EA56 /* WebRTC */,
+				F30F655F2C53928B0060EA56 /* QNScaleModel.swift */,
+				F30F65502C5391C20060EA56 /* Camera.swift */,
+				F30F65522C5391C20060EA56 /* CameraModel.swift */,
+				F30F654F2C5391C20060EA56 /* Features.swift */,
+				F30F65562C5391C20060EA56 /* RouteModel.swift */,
+				F30F65962C55D1940060EA56 /* WebRTCModel.swift */,
+				F392260E2CBA840F001B7B68 /* Errors.swift */,
+				F3065C712C9DD78E00B442AA /* DataModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F30F65752C5394A60060EA56 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F30F65702C5394A60060EA56 /* CameraView.swift */,
+				F30F65712C5394A60060EA56 /* FeatureIcon.swift */,
+				F30F65722C5394A60060EA56 /* FeatureSection.swift */,
+				F30F65732C5394A60060EA56 /* ScaleDeviceButtonLabel.swift */,
+				F30F65742C5394A60060EA56 /* ViewfinderView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F30F657C2C5394B20060EA56 /* QNConfig */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = QNConfig;
+			sourceTree = "<group>";
+		};
+		F30F657D2C5394B20060EA56 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F30F657C2C5394B20060EA56 /* QNConfig */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F30F65802C5394B20060EA56 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F30F657E2C5394B20060EA56 /* Environments.swift */,
+				F30F657F2C5394B20060EA56 /* Logger.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F30F65852C5394B20060EA56 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				F30F65812C5394B20060EA56 /* ResultScreen.swift */,
+				F30F65822C5394B20060EA56 /* ScanningScreen.swift */,
+				F30F65832C5394B20060EA56 /* SettingsScreen.swift */,
+				F30F65842C5394B20060EA56 /* WelcomeScreen.swift */,
+				F30F659A2C56017F0060EA56 /* WebRTCTestScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		F30F658D2C55CB190060EA56 /* WebRTC */ = {
+			isa = PBXGroup;
+			children = (
+				F30F658F2C55CB450060EA56 /* RTCCustomFrameCapture.swift */,
+				F30F65982C55DA9C0060EA56 /* SignalingMessage.swift */,
+				F30F65912C55CB460060EA56 /* RTCSimluatorVideoEncoderFactory.swift */,
+				F30F658E2C55CB450060EA56 /* RTCSimulatorVideoDecoderFactory.swift */,
+				F30F65902C55CB460060EA56 /* WebRTCClient.swift */,
+			);
+			path = WebRTC;
+			sourceTree = "<group>";
+		};
+		F358DCDE2CA19EA300093389 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				F358DCDF2CA19EAE00093389 /* ButtonStyles.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		FBE4D2FDE6EAB6ADC72C49CF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BE7315ED3CFB9D595702F694 /* Pods-hksi-monitoring-ios.debug.xcconfig */,
+				34A2103441AE4E9E2D05BB69 /* Pods-hksi-monitoring-ios.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,17 +333,23 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F30F65202C53895A0060EA56 /* Build configuration list for PBXNativeTarget "hksi-monitoring-ios" */;
 			buildPhases = (
+				846F296D096CC0D79FD4562D /* [CP] Check Pods Manifest.lock */,
 				F30F650C2C5389590060EA56 /* Sources */,
 				F30F650D2C5389590060EA56 /* Frameworks */,
 				F30F650E2C5389590060EA56 /* Resources */,
+				341AC969516B86130459DD73 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "hksi-monitoring-ios";
+			packageProductDependencies = (
+				F30F65632C5393050060EA56 /* ObservableUserDefault */,
+				F30F656E2C53940F0060EA56 /* SwiftDotenv */,
+			);
 			productName = "hksi-monitoring-ios";
-			productReference = F30F65102C5389590060EA56 /* hksi-monitoring-ios.app */;
+			productReference = F30F65102C5389590060EA56 /* HKSI Booth.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -114,6 +376,10 @@
 				Base,
 			);
 			mainGroup = F30F65072C5389590060EA56;
+			packageReferences = (
+				F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */,
+				F30F65652C5393160060EA56 /* XCRemoteSwiftPackageReference "swift-dotenv" */,
+			);
 			productRefGroup = F30F65112C5389590060EA56 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -128,21 +394,91 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F30F65472C538A630060EA56 /* README.md in Resources */,
 				F30F651D2C53895A0060EA56 /* Preview Assets.xcassets in Resources */,
+				F30F65862C5394B20060EA56 /* 123456789.qn in Resources */,
+				F3E6E2C52CBD17DB00E2BA4C /* test123456789.qn in Resources */,
 				F30F651A2C53895A0060EA56 /* Assets.xcassets in Resources */,
+				F3E6E2C62CBD17DB00E2BA4C /* XGKJ202410.qn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		341AC969516B86130459DD73 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		846F296D096CC0D79FD4562D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-hksi-monitoring-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F30F650C2C5389590060EA56 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F30F65162C5389590060EA56 /* ContentView.swift in Sources */,
-				F30F65182C5389590060EA56 /* Item.swift in Sources */,
+				F30F65952C55CB460060EA56 /* RTCSimluatorVideoEncoderFactory.swift in Sources */,
+				F30F65922C55CB460060EA56 /* RTCSimulatorVideoDecoderFactory.swift in Sources */,
+				F30F658B2C5394B20060EA56 /* SettingsScreen.swift in Sources */,
+				F30F65972C55D1940060EA56 /* WebRTCModel.swift in Sources */,
+				F30F65772C5394A60060EA56 /* FeatureIcon.swift in Sources */,
+				F3065C722C9DD78E00B442AA /* DataModel.swift in Sources */,
+				F30F65892C5394B20060EA56 /* ResultScreen.swift in Sources */,
+				F392260F2CBA840F001B7B68 /* Errors.swift in Sources */,
+				F358DCE02CA19EAE00093389 /* ButtonStyles.swift in Sources */,
+				F30F65792C5394A60060EA56 /* ScaleDeviceButtonLabel.swift in Sources */,
+				F30F65602C53928B0060EA56 /* QNScaleModel.swift in Sources */,
+				F30F65572C5391C20060EA56 /* Features.swift in Sources */,
+				F30F65762C5394A60060EA56 /* CameraView.swift in Sources */,
+				F30F65782C5394A60060EA56 /* FeatureSection.swift in Sources */,
+				F30F655E2C5391C20060EA56 /* RouteModel.swift in Sources */,
+				F30F65992C55DA9C0060EA56 /* SignalingMessage.swift in Sources */,
+				F30F65932C55CB460060EA56 /* RTCCustomFrameCapture.swift in Sources */,
+				F30F658A2C5394B20060EA56 /* ScanningScreen.swift in Sources */,
 				F30F65142C5389590060EA56 /* hksi_monitoring_iosApp.swift in Sources */,
+				F30F65872C5394B20060EA56 /* Environments.swift in Sources */,
+				F30F65882C5394B20060EA56 /* Logger.swift in Sources */,
+				F30F65582C5391C20060EA56 /* Camera.swift in Sources */,
+				F30F658C2C5394B20060EA56 /* WelcomeScreen.swift in Sources */,
+				F30F659B2C56017F0060EA56 /* WebRTCTestScreen.swift in Sources */,
+				F30F65942C55CB460060EA56 /* WebRTCClient.swift in Sources */,
+				F30F657A2C5394A60060EA56 /* ViewfinderView.swift in Sources */,
+				F30F655A2C5391C20060EA56 /* CameraModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +522,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -201,7 +537,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -249,7 +585,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -258,10 +594,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -270,7 +607,9 @@
 		};
 		F30F65212C53895A0060EA56 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE7315ED3CFB9D595702F694 /* Pods-hksi-monitoring-ios.debug.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -278,20 +617,41 @@
 				DEVELOPMENT_ASSET_PATHS = "\"hksi-monitoring-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = DL432894ND;
 				ENABLE_PREVIEWS = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This application requires background Bluetooth access to maintain connection to IoT devices.";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This application requires Bluetooth access to connect to IoT devices.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This application requires camera access to capture facial images";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/QNSDK",
+				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"WebRTC\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "hk.ust.cse.hci.hksi-monitoring-ios";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "HKSI Booth";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = QNSDK/QNDeviceSDK.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -299,7 +659,9 @@
 		};
 		F30F65222C53895A0060EA56 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 34A2103441AE4E9E2D05BB69 /* Pods-hksi-monitoring-ios.release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -307,20 +669,41 @@
 				DEVELOPMENT_ASSET_PATHS = "\"hksi-monitoring-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = DL432894ND;
 				ENABLE_PREVIEWS = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This application requires background Bluetooth access to maintain connection to IoT devices.";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This application requires Bluetooth access to connect to IoT devices.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This application requires camera access to capture facial images";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/QNSDK",
+				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"WebRTC\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "hk.ust.cse.hci.hksi-monitoring-ios";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "HKSI Booth";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = QNSDK/QNDeviceSDK.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -348,6 +731,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davidsteppenbeck/ObservableUserDefault";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.1;
+			};
+		};
+		F30F65652C5393160060EA56 /* XCRemoteSwiftPackageReference "swift-dotenv" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/thebarndog/swift-dotenv";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F30F65632C5393050060EA56 /* ObservableUserDefault */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */;
+			productName = ObservableUserDefault;
+		};
+		F30F656E2C53940F0060EA56 /* SwiftDotenv */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F30F65652C5393160060EA56 /* XCRemoteSwiftPackageReference "swift-dotenv" */;
+			productName = SwiftDotenv;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F30F65082C5389590060EA56 /* Project object */;
 }

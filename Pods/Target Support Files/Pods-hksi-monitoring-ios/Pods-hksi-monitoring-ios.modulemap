@@ -1,0 +1,6 @@
+framework module Pods_hksi_monitoring_ios {
+  umbrella header "Pods-hksi-monitoring-ios-umbrella.h"
+
+  export *
+  module * { export * }
+}
