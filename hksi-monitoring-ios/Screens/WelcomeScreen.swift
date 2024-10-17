@@ -143,6 +143,12 @@ fileprivate struct StartButton: View {
     
     private func start() {
         loading = true
+        
+        guard webRTCModel.signalingServer != "" else {
+            errorMessage = "Missing server URL configuration"
+            return
+        }
+        
         Task { @MainActor in
             do {
                 defer {
@@ -153,14 +159,14 @@ fileprivate struct StartButton: View {
                 do {
                     try await qnScaleModel.waitForSelectedDevice()
                 } catch {
-                    logger.warning("Error connecting to scale device: \(error.localizedDescription)")
+                    logger.warning("Error connecting to scale device: \(error)")
                 }
                 
                 try await webRTCModel.connect()
                 cameraModel.shouldDetectFace = true
                 routeModel.paths.append(.scanning)
             } catch {
-                errorMessage = "Error starting a user session: \(error.localizedDescription)"
+                errorMessage = "Error starting a user session: \(error)"
             }
         }
     }
@@ -173,20 +179,22 @@ fileprivate struct BottomStatusIndicator: View {
 
     var body: some View {
         HStack {
-//            switch webRTCModel.connected {
-//            case false:
-//                BottomStatusIndicator.message("Cloud prediction models: not connected", .error)
-//            case true:
-//                BottomStatusIndicator.message("Cloud prediction models: connected", .success)
-//            }
+            //            switch webRTCModel.connected {
+            //            case false:
+            //                BottomStatusIndicator.message("Cloud prediction models: not connected", .error)
+            //            case true:
+            //                BottomStatusIndicator.message("Cloud prediction models: connected", .success)
+            //            }
             
+            /// Camera status indicator
             switch cameraModel.selectedCaptureDevice {
             case nil:
                 BottomStatusIndicator.message("Camera: not specified", .error)
             default:
                 BottomStatusIndicator.message("Camera: specified (\(cameraModel.selectedCaptureDevice!.localizedName))", .success)
             }
-
+            
+            /// QNScale status indicator
             if !qnScaleModel.hasBluetoothPermission {
                 BottomStatusIndicator.message("Scale: no BLE permission", .error)
             } else {
@@ -204,6 +212,13 @@ fileprivate struct BottomStatusIndicator: View {
                 @unknown default:
                     BottomStatusIndicator.message("Scale: unknown state \(qnScaleModel.sdkStatus)", .warning)
                 }
+            }
+            
+            /// Network (WebRTC) status indicator
+            if webRTCModel.signalingServer == "" {
+                BottomStatusIndicator.message("WebRTC: server URL not configured", .error)
+            } else {
+                BottomStatusIndicator.message("WebRTC: \(webRTCModel.signalingServer)", .success)
             }
         }
     }

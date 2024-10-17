@@ -9,12 +9,13 @@ import SwiftUI
 import AVFoundation
 
 fileprivate enum SettingsItem: String, CaseIterable {
+    case webRTC = "WebRTC Server"
     case camera = "Camera Device"
     case scale = "Scale Device"
 }
 
 struct SettingsScreen: View {
-    @State private var selectedSetting: SettingsItem? = .camera
+    @State private var selectedSetting: SettingsItem? = .webRTC
     
     var body: some View {
         NavigationSplitView {
@@ -32,7 +33,8 @@ struct SettingsScreen: View {
             switch selectedSetting {
             case .camera: CameraSettings()
             case .scale: ScaleSettings()
-            default: Text("Please select a settings item")
+            case .webRTC: WebRTCSettings()
+            case .none: Text("Please select a settings item")
             }
         }
 //        .navigationTitle("Settings") // This is for outer navigation
@@ -180,6 +182,35 @@ struct ScaleSettings: View {
             Button("OK") {}
         } message: {
             Text(String(describing: alertError))
+        }
+    }
+}
+
+struct WebRTCSettings: View {
+    @Environment(WebRTCModel.self) var webRTCModel: WebRTCModel
+
+    var body: some View {
+        /// Silly apple again
+        /// I cannot directly do `TextField("...", text: $webRTCModel.serverURL)`
+        @Bindable var webRTCModel = webRTCModel
+
+        List {
+            Section {
+                LabeledContent {
+                    TextField("Server URL", text: $webRTCModel.signalingServer)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .textContentType(.URL)
+                        .keyboardType(.URL)
+                        .onSubmit {
+                            webRTCModel.signalingServer = webRTCModel.signalingServer.trimmingCharacters(in: .whitespacesAndNewlines)
+                        }
+                } label: {
+                    Text("Server URL")
+                }
+            } header: {
+                Text("WebRTC Server Configuration")
+            }
         }
     }
 }

@@ -9,9 +9,6 @@
 import UIKit
 import WebRTC
 
-//fileprivate let signalingServer = URL(string: "http://192.168.45.132:8080/offer")!
-fileprivate let signalingServer = URL(string: "http://192.168.1.100:8080/offer")!
-
 fileprivate let webRTCOfferConstraints = [
     kRTCMediaConstraintsOfferToReceiveAudio: kRTCMediaConstraintsValueFalse,
     kRTCMediaConstraintsOfferToReceiveVideo: kRTCMediaConstraintsValueTrue,
@@ -28,6 +25,7 @@ protocol WebRTCClientDelegate {
 }
 
 class WebRTCClient: NSObject {
+    public var signalingServer: URL?
     
     private var peerConnectionFactory: RTCPeerConnectionFactory!
     private var peerConnection: RTCPeerConnection?
@@ -406,6 +404,10 @@ class WebRTCClient: NSObject {
     }
 
     private func sendSDP(_ sessionDescription: RTCSessionDescription) async throws {
+        guard let signalingServer = self.signalingServer else {
+            throw WebRTCError.missingSignalingServer
+        }
+        
         var type = ""
         if sessionDescription.type == .offer {
             type = "offer"

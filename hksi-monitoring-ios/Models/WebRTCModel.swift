@@ -7,6 +7,7 @@
 //  Are taken from https://github.com/tkmn0/SimpleWebRTCExample_iOS/ (MIT licensed)
 
 import Foundation
+import SwiftUI
 import WebRTC
 
 @Observable
@@ -26,6 +27,22 @@ class WebRTCModel {
         }
     }
     
+    /// Server URL as a user preference
+    @ObservationIgnored
+    @AppStorage("WebRTC Server")
+    var _signalingServer: String = ""
+    var signalingServer: String {
+        get {
+            access(keyPath: \.signalingServer)
+            return _signalingServer
+        }
+        set {
+            withMutation(keyPath: \.signalingServer) {
+                _signalingServer = newValue
+            }
+        }
+    }
+    
     @ObservationIgnored
     var onSessionEnd: (() -> Void)?
     
@@ -37,9 +54,6 @@ class WebRTCModel {
     
     @ObservationIgnored
     private var webRTCClient: WebRTCClient!
-    
-    @ObservationIgnored
-    private let signalingServer: URL = URL(string: "http://192.168.91.132:8080/offer")!
     
     init(videoTrack: Bool = true, audioTrack: Bool = false, dataChannel: Bool = true, useCustomCapturer customCapturer: Bool = true) {
         
@@ -82,6 +96,7 @@ class WebRTCModel {
     
     func connect() async throws {
         guard !webRTCClient.isConnected else { return }
+        webRTCClient.signalingServer = URL(string: signalingServer.trimmingCharacters(in: .whitespacesAndNewlines))
         try await webRTCClient.connect()
     }
     

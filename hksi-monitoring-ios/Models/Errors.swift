@@ -16,6 +16,7 @@ enum QNError: Error {
 }
 
 enum WebRTCError: Error {
+    case missingSignalingServer
     case connection
     case missingPeerConnection
     case generateOfferSDP
