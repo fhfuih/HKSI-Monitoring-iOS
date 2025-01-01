@@ -7,19 +7,20 @@
 
 import Foundation
 
-class SkinPrediction: Codable {
-    var count: Int
-//    var coordinates: Double
-}
+//class SkinPrediction: Codable {
+//    var count: Int
+////    var coordinates: Double
+//}
 
 class FramePrediction: Codable {
     var hr: Double?
     var hrv: Double?
     
-    var fatigue: Double? /// A 0~1 level of fatigue
+    var fatigue: Double? /// A 0~100 level of fatigue
     
-    var darkCircles: SkinPrediction?
-    var pimples: SkinPrediction?
+    var darkCircleLeft: Bool?
+    var darkCircleRight: Bool?
+    var pimpleCount: Int?
     
     /// Whether it is final or not
     var final: Bool
@@ -34,12 +35,21 @@ class FramePrediction: Codable {
         if fatigue == nil {
             fatigue = other.fatigue
         }
-        if darkCircles == nil {
-            darkCircles = other.darkCircles
+        if darkCircleLeft == nil {
+            darkCircleLeft = other.darkCircleLeft
         }
-        if pimples == nil {
-            pimples = other.pimples
+        if darkCircleRight == nil {
+            darkCircleRight = other.darkCircleRight
         }
+        if pimpleCount == nil {
+            pimpleCount = other.pimpleCount
+        }
+//        if darkCircles == nil {
+//            darkCircles = other.darkCircles
+//        }
+//        if pimples == nil {
+//            pimples = other.pimples
+//        }
     }
 }
 

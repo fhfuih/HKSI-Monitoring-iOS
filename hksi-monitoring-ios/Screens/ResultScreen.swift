@@ -89,27 +89,57 @@ struct ResultScreen: View {
                         }
                         FeatureSection(feature: .skin) {
                             VStack {
-                                let darkCirclesCount = webRTCModel.finalValue?.darkCircles?.count
-                                let pimpleCount = webRTCModel.finalValue?.pimples?.count
-                                
-                                if let darkCirclesCount {
-                                    Text("Dark circles around eyes: ")
-                                        .font(.system(size: 28, weight: .semibold))
-                                    Text(darkCirclesCount, format: .percent)
-                                        .font(.system(size: 40, weight: .bold))
-                                }
-                                
-                                if let pimpleCount {
-                                    Text("Pimples: ")
-                                        .font(.system(size: 28, weight: .semibold))
-                                    Text(pimpleCount, format: .percent)
-                                        .font(.system(size: 40, weight: .bold))
-                                }
-                                
-                                if darkCirclesCount == nil && pimpleCount == nil {
-                                    Text("No data")
-                                }
-                            }
+                                     let darkCircleLeft = webRTCModel.finalValue?.darkCircleLeft
+                                     let darkCircleRight = webRTCModel.finalValue?.darkCircleRight
+                                     let pimpleCount = webRTCModel.finalValue?.pimpleCount
+
+                                     if let darkCircleLeft {
+                                         Text("Dark circle (left): ")
+                                             .font(.system(size: 28, weight: .semibold)) +
+                                         Text(darkCircleLeft ? "Yes" : "No")
+                                             .font(.system(size: 40, weight: .bold))
+                                     }
+                                     
+                                     if let darkCircleRight {
+                                         Text("Dark circle (right): ")
+                                             .font(.system(size: 28, weight: .semibold)) +
+                                         Text(darkCircleRight ? "Yes" : "No")
+                                             .font(.system(size: 40, weight: .bold))
+                                     }
+                                     
+                                     if let pimpleCount {
+                                         Text("Pimple count: ")
+                                             .font(.system(size: 28, weight: .semibold)) +
+                                         Text(pimpleCount, format: .number)
+                                             .font(.system(size: 40, weight: .bold))
+                                     }
+                                     
+                                     if darkCircleLeft == nil && darkCircleRight == nil && pimpleCount == nil {
+                                         Text("No data")
+                                     }
+                                 }
+//                            VStack {
+//                                let darkCirclesCount = webRTCModel.finalValue?.darkCircles?.count
+//                                let pimpleCount = webRTCModel.finalValue?.pimples?.count
+//                                
+//                                if let darkCirclesCount {
+//                                    Text("Dark circles around eyes: ")
+//                                        .font(.system(size: 28, weight: .semibold))
+//                                    Text(darkCirclesCount, format: .percent)
+//                                        .font(.system(size: 40, weight: .bold))
+//                                }
+//                                
+//                                if let pimpleCount {
+//                                    Text("Pimples: ")
+//                                        .font(.system(size: 28, weight: .semibold))
+//                                    Text(pimpleCount, format: .percent)
+//                                        .font(.system(size: 40, weight: .bold))
+//                                }
+//                                
+//                                if darkCirclesCount == nil && pimpleCount == nil {
+//                                    Text("No data")
+//                                }
+//                            }
                         }
                     }
                 }

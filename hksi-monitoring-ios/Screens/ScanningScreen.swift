@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-fileprivate let DURATION_DISCARD: Double = 5
-fileprivate let DURATION_TOTAL: Double = 30
-fileprivate let DURATION_SENDING: Double = 20
+fileprivate let DURATION_DISCARD: Double = 2
+fileprivate let DURATION_TOTAL: Double = 36
+fileprivate let DURATION_SENDING: Double = 34
 
 struct ScanningScreen: View {
     /// XCode preview constantly crash. I have to pause the camera and countdown thing and actually run it to develop UI
@@ -122,27 +122,58 @@ struct ScanningScreen: View {
                     }
                     FeatureSection(feature: .skin) {
                         VStack {
-                            let darkCircles = webRTCModel.intermediateValue?.darkCircles?.count ?? (DEBUG ? Optional(0) : nil)
-                            let pimples = webRTCModel.intermediateValue?.pimples?.count ?? (DEBUG ? Optional(0) : nil)
+                                 let darkCircleLeft = webRTCModel.intermediateValue?.darkCircleLeft ?? (DEBUG ? Optional(false) : nil)
+                                 let darkCircleRight = webRTCModel.intermediateValue?.darkCircleRight ?? (DEBUG ? Optional(false) : nil)
+                                 let pimpleCount = webRTCModel.intermediateValue?.pimpleCount ?? (DEBUG ? Optional(0) : nil)
+
                             
-                            if let darkCircles {
-                                Text("Dark circles around eyes: ")
-                                    .font(.system(size: 28, weight: .semibold))
-                                Text(darkCircles, format: .number)
-                                    .font(.system(size: 40, weight: .bold))
-                            }
-                            
-                            if let pimples {
-                                Text("Pimples: ")
-                                    .font(.system(size: 28, weight: .semibold))
-                                Text(pimples, format: .number)
-                                    .font(.system(size: 40, weight: .bold))
-                            }
-                            
-                            if darkCircles == nil && pimples == nil {
-                                ProgressView()
-                            }
-                        }
+                                 if let darkCircleLeft {
+                                     Text("Dark circle (left): ")
+                                         .font(.system(size: 28, weight: .semibold)) +
+                                     Text(darkCircleLeft ? "Yes" : "No")
+                                         .font(.system(size: 40, weight: .bold))
+                                 }
+                                 
+                                 if let darkCircleRight {
+                                     Text("Dark circle (right): ")
+                                         .font(.system(size: 28, weight: .semibold)) +
+                                     Text(darkCircleRight ? "Yes" : "No")
+                                         .font(.system(size: 40, weight: .bold))
+                                 }
+                                 
+                                 if let pimpleCount {
+                                     Text("Pimple count: ")
+                                         .font(.system(size: 28, weight: .semibold)) +
+                                     Text(pimpleCount, format: .number)
+                                         .font(.system(size: 40, weight: .bold))
+                                 }
+                                 
+                                 if darkCircleLeft == nil && darkCircleRight == nil && pimpleCount == nil {
+                                     ProgressView()
+                                 }
+                             }
+//                        VStack {
+//                            let darkCircles = webRTCModel.intermediateValue?.darkCircles?.count ?? (DEBUG ? Optional(0) : nil)
+//                            let pimples = webRTCModel.intermediateValue?.pimples?.count ?? (DEBUG ? Optional(0) : nil)
+//                            
+//                            if let darkCircles {
+//                                Text("Dark circles around eyes: ")
+//                                    .font(.system(size: 28, weight: .semibold))
+//                                Text(darkCircles, format: .number)
+//                                    .font(.system(size: 40, weight: .bold))
+//                            }
+//                            
+//                            if let pimples {
+//                                Text("Pimples: ")
+//                                    .font(.system(size: 28, weight: .semibold))
+//                                Text(pimples, format: .number)
+//                                    .font(.system(size: 40, weight: .bold))
+//                            }
+//                            
+//                            if darkCircles == nil && pimples == nil {
+//                                ProgressView()
+//                            }
+//                        }
                     }
                 }
             }
