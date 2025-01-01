@@ -104,7 +104,7 @@ struct ScanningScreen: View {
                         .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: 0)
                     Text("Please put your face in the outlined area.")
                         .font(.title3)
-                    FaceCroppedView()
+//                    FaceCroppedView()
                 }
 
                 VStack(spacing: 50) {
@@ -142,6 +142,8 @@ struct ScanningScreen: View {
                                  }
                                  
                                  if let pimpleCount {
+                                     Spacer().frame(height: 25)
+                                     
                                      Text("Pimple count: ")
                                          .font(.system(size: 28, weight: .semibold)) +
                                      Text(pimpleCount, format: .number)
@@ -151,7 +153,9 @@ struct ScanningScreen: View {
                                  if darkCircleLeft == nil && darkCircleRight == nil && pimpleCount == nil {
                                      ProgressView()
                                  }
-                             }
+                            }
+                            .padding(.top, -25)
+                             
 //                        VStack {
 //                            let darkCircles = webRTCModel.intermediateValue?.darkCircles?.count ?? (DEBUG ? Optional(0) : nil)
 //                            let pimples = webRTCModel.intermediateValue?.pimples?.count ?? (DEBUG ? Optional(0) : nil)

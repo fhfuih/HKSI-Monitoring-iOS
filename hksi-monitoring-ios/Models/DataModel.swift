@@ -56,6 +56,6 @@ class FramePrediction: Codable {
 struct BodyPrediction {
     /// Apart from weight and height (directly from `QNScaleData`),
     /// all other values from `getItem()` is nullable
-    var weight: Double /// kg
+    var weight: Double? /// kg
     var bodyFat: Double? /// %
 }

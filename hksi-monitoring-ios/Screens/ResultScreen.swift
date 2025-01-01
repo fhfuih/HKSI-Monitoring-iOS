@@ -106,7 +106,7 @@ struct ResultScreen: View {
                                          Text(darkCircleRight ? "Yes" : "No")
                                              .font(.system(size: 40, weight: .bold))
                                      }
-                                     
+                                     Spacer().frame(height: 25)
                                      if let pimpleCount {
                                          Text("Pimple count: ")
                                              .font(.system(size: 28, weight: .semibold)) +
@@ -118,6 +118,7 @@ struct ResultScreen: View {
                                          Text("No data")
                                      }
                                  }
+                                .padding(.top, -25)
 //                            VStack {
 //                                let darkCirclesCount = webRTCModel.finalValue?.darkCircles?.count
 //                                let pimpleCount = webRTCModel.finalValue?.pimples?.count
@@ -145,9 +146,9 @@ struct ResultScreen: View {
                 }
                 .containerRelativeFrame(.horizontal, count: 3, span: 2, spacing: 0)
                 
-                VStack(alignment: .center, spacing: 20) {
-                    Text("TBD: portal to historical data and long-term data analysis.")
-                }
+//                VStack(alignment: .center, spacing: 20) {
+//                    Text("TBD: portal to historical data and long-term data analysis.")
+//                }
             }
             
             Button(action: finish) {
