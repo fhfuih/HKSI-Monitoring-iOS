@@ -104,7 +104,7 @@ struct ScanningScreen: View {
                         .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: 0)
                     Text("Please put your face in the outlined area.")
                         .font(.title3)
-//                    FaceCroppedView()
+//                    FrameToUploadView()
                 }
 
                 VStack(spacing: 50) {

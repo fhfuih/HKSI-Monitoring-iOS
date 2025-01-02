@@ -8,7 +8,7 @@ struct CameraView: View {
     var body: some View {
         @Bindable var cameraModel = cameraModel
         ZStack {
-            ViewfinderView(image: $cameraModel.viewfinderImage)
+            ViewfinderView(image: $cameraModel.cameraPreviewImage)
                 .background(.black)
             
             GeometryReader { geometry in
@@ -49,9 +49,9 @@ struct CameraView: View {
             cameraModel.stopCamera()
             
             /// Remove the last frame from the last user. Prevent the next user from seeing it during page transition
-            cameraModel.viewfinderImage = nil
-            cameraModel.faceCroppedImage = nil
-            cameraModel.faceBounds = []
+            cameraModel.cameraPreviewImage = nil
+            cameraModel.cameraPreviewFaceBounds = []
+            cameraModel.cameraDebugPreviewUploadingImage = nil
         }
     }
 }
@@ -62,7 +62,7 @@ struct FaceBoundsView: View {
     var body: some View {
         GeometryReader { geom in
             Canvas { context, size in
-                for bound in cameraModel.faceBounds {
+                for bound in cameraModel.cameraPreviewFaceBounds {
                     let effectiveBound = CGRect(
                         x: bound.origin.x * geom.size.width,
                         y: bound.origin.y * geom.size.height,
@@ -76,27 +76,27 @@ struct FaceBoundsView: View {
     }
 }
 
-/// If uncomment FaceCroppedView,
-/// remember to also remove `@ObservationIgnored` of `var faceCroppedImage: Image?` in `CameraModel.swift`
-struct FaceCroppedView: View {
-    @Environment(CameraModel.self) var cameraModel: CameraModel
-    
-    private static let barHeightFactor = 0.15
-    
-    var body: some View {
-        @Bindable var cameraModel = cameraModel
-        ZStack {
-            ViewfinderView(image: $cameraModel.faceCroppedImage)
-                .background(.black)
-                .border(Color.yellow, width: 3)
-        }
-        .aspectRatio(4 / 3, contentMode: .fit)
-        .task {
-            guard !isInPreview() else {
-                return
-            }
-            
-            await cameraModel.startCamera()
-        }
-    }
-}
+/// If uncomment this view,
+/// remember to also remove a specific `@ObservationIgnored` in `CameraModel.swift`
+//struct FrameToUploadView: View {
+//    @Environment(CameraModel.self) var cameraModel: CameraModel
+//    
+//    private static let barHeightFactor = 0.15
+//    
+//    var body: some View {
+//        @Bindable var cameraModel = cameraModel
+//        ZStack {
+//            ViewfinderView(image: $cameraModel.cameraDebugPreviewUploadingImage)
+//                .background(.black)
+//                .border(Color.yellow, width: 3)
+//        }
+//        .aspectRatio(4 / 3, contentMode: .fit)
+//        .task {
+//            guard !isInPreview() else {
+//                return
+//            }
+//            
+//            await cameraModel.startCamera()
+//        }
+//    }
+//}

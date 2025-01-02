@@ -59,22 +59,20 @@ class Camera: NSObject {
         guard let captureDevice = captureDevice else { return false }
         return captureDevice.position == .front
     }
-
-    private var addToPhotoStream: ((AVCapturePhoto) -> Void)?
     
-    private var addToPreviewStream: ((CIImage) -> Void)?
+    private var addToPreviewImageStream: ((CIImage) -> Void)?
     
-    private var addToFaceBoundsStream: (([CGRect]) -> Void)?
+    private var addToPreviewFaceBoundsStream: (([CGRect]) -> Void)?
     
-    private var addToFaceStream: ((CVPixelBuffer) -> Void)?
+    private var addToUploadStream: ((CVPixelBuffer) -> Void)?
     
     private var facePixelBufferRenderContext = CIContext()
     
     var isPreviewPaused = false
     
-    lazy var previewStream: AsyncStream<CIImage> = {
+    lazy var previewImageStream: AsyncStream<CIImage> = {
         AsyncStream { continuation in
-            addToPreviewStream = { ciImage in
+            addToPreviewImageStream = { ciImage in
                 if !self.isPreviewPaused {
                     continuation.yield(ciImage)
                 }
@@ -82,25 +80,17 @@ class Camera: NSObject {
         }
     }()
     
-    lazy var photoStream: AsyncStream<AVCapturePhoto> = {
+    lazy var previewFaceBoundsStream: AsyncStream<[CGRect]> = {
         AsyncStream { continuation in
-            addToPhotoStream = { photo in
-                continuation.yield(photo)
-            }
-        }
-    }()
-    
-    lazy var faceBoundsStream: AsyncStream<[CGRect]> = {
-        AsyncStream { continuation in
-            addToFaceBoundsStream = { bounds in
+            addToPreviewFaceBoundsStream = { bounds in
                 continuation.yield(bounds)
             }
         }
     }()
     
-    lazy var facePixelBufferStream: AsyncStream<CVPixelBuffer> = {
+    lazy var pixelBufferToUploadStream: AsyncStream<CVPixelBuffer> = {
         AsyncStream { continuation in
-            addToFaceStream = { ciImage in
+            addToUploadStream = { ciImage in
                 continuation.yield(ciImage)
             }
         }
@@ -407,19 +397,6 @@ class Camera: NSObject {
     }
 }
 
-extension Camera: AVCapturePhotoCaptureDelegate {
-    
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        
-        if let error = error {
-            logger.error("Error capturing photo: \(error.localizedDescription)")
-            return
-        }
-        
-        addToPhotoStream?(photo)
-    }
-}
-
 extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let pixelBuffer = sampleBuffer.imageBuffer else { return }
@@ -430,15 +407,17 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
 
         /// Add the original camera view to the UI
-        addToPreviewStream?(CIImage(cvPixelBuffer: pixelBuffer))
+        addToPreviewImageStream?(CIImage(cvPixelBuffer: pixelBuffer))
         
-        /// Add the cropped camera view to the network stream
+        /// Add the view to the network uploading stream
+        // TODO: The face dection is broken, and currently we simply upload the entire view
         if shouldDetectFace {
-            detectFace(pixelBuffer)
+//            detectFaceAndAddToFaceStream(pixelBuffer)
+            addToUploadStream?(pixelBuffer)
         }
     }
     
-    private func detectFace(_ pixelBuffer: CVPixelBuffer) {
+    private func detectFaceAndAddToUploadStream(_ pixelBuffer: CVPixelBuffer) {
         // MARK: Facial Recognition & Tracking
         /// - Tag: Process Images: Detection or Tracking
         var requestHandlerOptions: [VNImageOption: AnyObject] = [:]
@@ -505,7 +484,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
 //                facePixelBufferRenderContext.render(faceCroppedImage, to: outputPixelBuffer!)
 //                addToFaceStream?(outputPixelBuffer!)
 //            }
-            addToFaceStream?(pixelBuffer)
+            addToUploadStream?(pixelBuffer)
             
             /// Setup the next round of tracking.
             if !trackingRequest.isLastFrame {
@@ -518,7 +497,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
             }
         }
         self.trackingRequests = newTrackingRequests
-        addToFaceBoundsStream?(faceBounds)
+        addToPreviewFaceBoundsStream?(faceBounds)
     }
     
     private func getFaceBound(_ faceTrackingObservation: VNDetectedObjectObservation) -> CGRect {

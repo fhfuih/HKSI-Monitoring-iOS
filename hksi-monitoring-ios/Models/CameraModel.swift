@@ -56,14 +56,13 @@ final class CameraModel {
     let faceExpectedBoundingBox = CGRect(x: (1-0.3)/2, y: (1-0.5)/2, width: 0.3, height: 0.5)
     
     /// These variables will be continuously updated by the async Task below
-    var viewfinderImage: Image?
-    var faceBounds: [CGRect] = [CGRect]()
+    var cameraPreviewImage: Image?
+    var cameraPreviewFaceBounds: [CGRect] = [CGRect]()
     
-    /// If using `FaceCroppedView`, remember to *comment* `@ObservationIgnored` of `faceCroppedImage`
-    /// So that the preview will update.
-    /// If not using `FaceCroppedView`, remember to *uncomment* so that memory is saved
-//    @ObservationIgnored
-    var faceCroppedImage: Image?
+    /// If use `cameraDebugPreviewUploadingImage`, remember to also *comment* `@ObservationIgnored` as well.
+    /// If not using it, remember to *uncomment* to boost performance
+    @ObservationIgnored
+    var cameraDebugPreviewUploadingImage: Image?
     
     /// These variables are the user's preferences (the "saved" settings)
     @ObservationIgnored
@@ -95,15 +94,15 @@ final class CameraModel {
         /// Bind camera preview stream to the view.
         /// This does NOT start the camera and add images to the stream.
         Task {
-            await handleCameraPreviews()
+            await startCameraPreviewImageUpdate()
         }
         
         Task {
-            await handleCameraFaceBounds()
+            await startCameraPreviewFaceBoundsUpdate()
         }
         
         Task {
-            await handleCameraFaceCroppedPreview()
+            await startCameraViewUpload()
         }
         
 //        Task {
@@ -119,46 +118,34 @@ final class CameraModel {
         camera.stop()
     }
 
-    private func handleCameraPreviews() async {
-        let imageStream = camera.previewStream.map { $0.image }
+    private func startCameraPreviewImageUpdate() async {
+        let imageStream = camera.previewImageStream.map { $0.image }
 
         for await image in imageStream {
             Task { @MainActor in
-                viewfinderImage = image
+                cameraPreviewImage = image
             }
         }
     }
     
-    private func handleCameraFaceBounds() async {
-        let faceBoundsStream = camera.faceBoundsStream
+    private func startCameraPreviewFaceBoundsUpdate() async {
+        let faceBoundsStream = camera.previewFaceBoundsStream
         
         for await bounds in faceBoundsStream {
             Task { @MainActor in
-                faceBounds = bounds
+                cameraPreviewFaceBounds = bounds
             }
         }
     }
     
-    private func handleCameraFaceCroppedPreview() async {
-        let facePixelBufferStream = camera.facePixelBufferStream
+    private func startCameraViewUpload() async {
+        let pixelBufferToUploadStream = camera.pixelBufferToUploadStream
         
-        for await pixelBuffer in facePixelBufferStream {
+        for await pixelBuffer in pixelBufferToUploadStream {
             webRTCModel?.didOutput(pixelBuffer)
-            faceCroppedImage = CIImage(cvPixelBuffer: pixelBuffer).image
+            cameraDebugPreviewUploadingImage = CIImage(cvPixelBuffer: pixelBuffer).image
         }
     }
-    
-//    func handleCameraPhotos() async {
-//        let unpackedPhotoStream = camera.photoStream
-//            .compactMap { self.unpackPhoto($0) }
-//        
-//        for await photoData in unpackedPhotoStream {
-//            Task { @MainActor in
-//                thumbnailImage = photoData.thumbnailImage
-//            }
-//            savePhoto(imageData: photoData.imageData)
-//        }
-//    }
     
     private func getAvailableCaptureDevices() {
         let allCaptureDevices = AVCaptureDevice.DiscoverySession(
