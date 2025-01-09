@@ -346,6 +346,7 @@ class QNScaleModel: NSObject {
                 self.qnBleApi.discoveryListener = self
                 self.qnBleApi.connectionChangeListener = self
                 self.qnBleApi.dataListener = self
+                self.qnBleApi.logListener = self
                 logger.debug("Init QN scale SDK.")
             }
         })
@@ -467,6 +468,12 @@ extension QNScaleModel: QNBleConnectionChangeListener {
     }
 }
 
+extension QNScaleModel: QNLogProtocol {
+    func onLog(_ log: String) {
+        logger.debug("The Content of LogListener: \(log)")
+    }
+}
+
 /// Event handlers when receiving data from a bluetooth device
 extension QNScaleModel: QNScaleDataListener {
     /// Intermediate weight data during the session
@@ -478,7 +485,7 @@ extension QNScaleModel: QNScaleDataListener {
     
     /// Stablized data (including weight and others)
     func onGetScaleData(_ device: QNBleDevice!, data scaleData: QNScaleData!) {
-        logger.debug("QNScale Received data: \(scaleData.weight) from \(device.mac == self.selectedDevice?.mac ? "current" : device.mac)")
+        logger.debug("QNScale Received stablized data: \(scaleData.weight) from \(device.mac == self.selectedDevice?.mac ? "current" : device.mac)")
         guard device.mac == self.selectedDevice?.mac else { return }
         self.finalValue = BodyPrediction(
             weight: scaleData.weight,
@@ -515,6 +522,8 @@ extension QNScaleModel: QNScaleDataListener {
             break
         case .connecting:
             logger.debug("QNScale state \(state.rawValue) connecting from \(device.mac == self.selectedDevice?.mac ? "current" : device.mac)")
+        case .bodyFat:
+            logger.debug("QNScale state \(state.rawValue) detecting bodyfat from \(device.mac == self.selectedDevice?.mac ? "current" : device.mac)")
         default:
             logger.debug("QNScale state \(state.rawValue) (unhandled) from \(device.mac == self.selectedDevice?.mac ? "current" : device.mac)")
             break
@@ -601,3 +610,50 @@ extension QNDeviceInfo: Codable {
         try c.encode(hasEightElectrodes, forKey: .hasEightElectrodes)
     }
 }
+
+
+//// 扩展 QNScaleModel 添加日志监听功能
+//extension QNScaleModel: QNLogListener {
+//    
+//    /// 实现 SDK 的日志监听方法
+//    func onLog(_ log: String) {
+//        // 输出日志到控制台
+//        logger.debug("SDK Log: \(log)")
+//        
+//        // 保存日志到本地文件
+//        saveLogToFile(log)
+//    }
+//    
+//    /// 将日志保存到本地文件
+//    private func saveLogToFile(_ log: String) {
+//        let fileManager = FileManager.default
+//        let logsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+//        let logFileURL = logsDirectory.appendingPathComponent("sdk_logs.txt")
+//        
+//        // 尝试追加日志到文件
+//        do {
+//            if fileManager.fileExists(atPath: logFileURL.path) {
+//                // 文件存在，追加日志
+//                let fileHandle = try FileHandle(forWritingTo: logFileURL)
+//                fileHandle.seekToEndOfFile()
+//                if let data = (log + "\n").data(using: .utf8) {
+//                    fileHandle.write(data)
+//                }
+//                fileHandle.closeFile()
+//            } else {
+//                // 文件不存在，创建新文件并写入日志
+//                try log.write(to: logFileURL, atomically: true, encoding: .utf8)
+//            }
+//        } catch {
+//            logger.error("Failed to save log to file: \(error.localizedDescription)")
+//        }
+//    }
+//}
+//
+//// 在初始化 SDK 时设置日志监听器
+//extension QNScaleModel {
+//    func initializeLogListener() {
+//        qnBleApi.setLogListener(self)
+//        logger.debug("Log listener has been set.")
+//    }
+//}
