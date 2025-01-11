@@ -256,9 +256,9 @@ class QNScaleModel: NSObject {
             let config = QNUserScaleConfig()
             let visitorUser = QNUser()
             visitorUser.userId = "Booth user"
-            visitorUser.height = 175
+            visitorUser.height = 165
             visitorUser.gender = "female"
-            visitorUser.birthday = ISO8601DateFormatter().date(from: "2020-01-01T00:00:00+08:00")
+            visitorUser.birthday = ISO8601DateFormatter().date(from: "2000-01-01T00:00:00+08:00")
             visitorUser.athleteType = .sport
 //            visitorUser.clothesWeight = 0 // TODO
             config.isVisitor = true
