@@ -69,6 +69,7 @@ struct ResultScreen: View {
                                     Text("kg")
                                         .font(.system(size: 28, weight: .semibold))
                                 } else {
+                                    
                                     Text("Weight: ")
                                         .font(.system(size: 28, weight: .semibold)) +
                                     Text("No data")
