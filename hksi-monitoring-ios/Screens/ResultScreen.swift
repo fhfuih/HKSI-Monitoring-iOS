@@ -57,9 +57,9 @@ struct ResultScreen: View {
                     GridRow {
                         FeatureSection(feature: .body) {
                             VStack {
-//                                let weight = qnScaleModel.finalValue?.weight
-//                                let bodyFat = qnScaleModel.finalValue?.bodyFat
-                                let weight = qnScaleModel.intermediateWeight
+                                let weight = qnScaleModel.finalValue?.weight
+                                let bodyFat = qnScaleModel.finalValue?.bodyFat
+//                                let weight = qnScaleModel.intermediateWeight
                                 
                                 if let weight {
                                     Text("Weight: ")
@@ -76,17 +76,20 @@ struct ResultScreen: View {
                                         .font(.system(size: 28))
                                 }
                                 
-//                                if let bodyFat {
-//                                    Text("Body Fat: ")
-//                                        .font(.system(size: 28, weight: .semibold)) +
+                                if let bodyFat {
+                                    Text("Body Fat: ")
+                                        .font(.system(size: 28, weight: .semibold)) +
 //                                    Text(bodyFat, format: .percent)
-//                                        .font(.system(size: 40, weight: .bold))
-//                                } else {
-//                                    Text("Body Fat: ")
-//                                        .font(.system(size: 28, weight: .semibold)) +
-//                                    Text("No data")
-//                                        .font(.system(size: 28))
-//                                }
+                                    Text(bodyFat, format: .number)
+                                        .font(.system(size: 40, weight: .bold)) +
+                                    Text("%")
+                                        .font(.system(size: 28, weight: .semibold))
+                                } else {
+                                    Text("Body Fat: ")
+                                        .font(.system(size: 28, weight: .semibold)) +
+                                    Text("No data")
+                                        .font(.system(size: 28))
+                                }
                             }
                         }
                         FeatureSection(feature: .skin) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C368EA22D5C2E7E001803C7 /* Withings in Frameworks */ = {isa = PBXBuildFile; productRef = 0C368EA12D5C2E7E001803C7 /* Withings */; };
 		4BC68348C1092FBCE2297E31 /* Pods_hksi_monitoring_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */; };
 		F3065C722C9DD78E00B442AA /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3065C712C9DD78E00B442AA /* DataModel.swift */; };
 		F30F65142C5389590060EA56 /* hksi_monitoring_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65132C5389590060EA56 /* hksi_monitoring_iosApp.swift */; };
@@ -127,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F30F65482C538A630060EA56 /* libQNDeviceSDK.a in Frameworks */,
+				0C368EA22D5C2E7E001803C7 /* Withings in Frameworks */,
 				4BC68348C1092FBCE2297E31 /* Pods_hksi_monitoring_ios.framework in Frameworks */,
 				F30F656F2C53940F0060EA56 /* SwiftDotenv in Frameworks */,
 				F30F65642C5393050060EA56 /* ObservableUserDefault in Frameworks */,
@@ -347,6 +349,7 @@
 			packageProductDependencies = (
 				F30F65632C5393050060EA56 /* ObservableUserDefault */,
 				F30F656E2C53940F0060EA56 /* SwiftDotenv */,
+				0C368EA12D5C2E7E001803C7 /* Withings */,
 			);
 			productName = "hksi-monitoring-ios";
 			productReference = F30F65102C5389590060EA56 /* HKSI Booth.app */;
@@ -379,6 +382,7 @@
 			packageReferences = (
 				F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */,
 				F30F65652C5393160060EA56 /* XCRemoteSwiftPackageReference "swift-dotenv" */,
+				0C368EA02D5C2E7E001803C7 /* XCRemoteSwiftPackageReference "withings-sdk-ios" */,
 			);
 			productRefGroup = F30F65112C5389590060EA56 /* Products */;
 			projectDirPath = "";
@@ -737,6 +741,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0C368EA02D5C2E7E001803C7 /* XCRemoteSwiftPackageReference "withings-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/withings-sdk/withings-sdk-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.0;
+			};
+		};
 		F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/davidsteppenbeck/ObservableUserDefault";
@@ -756,6 +768,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0C368EA12D5C2E7E001803C7 /* Withings */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C368EA02D5C2E7E001803C7 /* XCRemoteSwiftPackageReference "withings-sdk-ios" */;
+			productName = Withings;
+		};
 		F30F65632C5393050060EA56 /* ObservableUserDefault */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */;

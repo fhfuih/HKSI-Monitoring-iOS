@@ -1,5 +1,5 @@
 {
-  "originHash" : "d653b148b57db7e16567d55d0be1d9a65049ef829a850b5e44a7b70864e0f8b0",
+  "originHash" : "22a4a447420bfea32bb5c3f74c2dc5316530e6981ee2c910581f6d64465bfdba",
   "pins" : [
     {
       "identity" : "observableuserdefault",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "303e5c5c36d6a558407d364878df131c3546fad8",
         "version" : "510.0.2"
+      }
+    },
+    {
+      "identity" : "withings-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/withings-sdk/withings-sdk-ios.git",
+      "state" : {
+        "revision" : "211bbb9c5fe7ff1e558e7ede17957e0c5ae5e608",
+        "version" : "4.1.0"
       }
     }
   ],

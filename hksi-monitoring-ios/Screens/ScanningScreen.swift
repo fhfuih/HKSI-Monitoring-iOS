@@ -63,9 +63,9 @@ struct ScanningScreen: View {
                         VStack {
                             /// Only weight is available in intermediate results
                             /// But we show body fat anyway to pretend awesome
-//                            let weight = qnScaleModel.finalValue?.weight ?? qnScaleModel.intermediateWeight
-//                            let bodyFat = qnScaleModel.finalValue?.bodyFat
-                            let weight = qnScaleModel.intermediateWeight
+                            let weight = qnScaleModel.finalValue?.weight ?? qnScaleModel.intermediateWeight
+                            let bodyFat = qnScaleModel.finalValue?.bodyFat
+//                            let weight = qnScaleModel.intermediateWeight
 
                             if let weight {
                                 Text("Weight: ")
@@ -83,19 +83,21 @@ struct ScanningScreen: View {
                                 }
                             }
                             
-//                            if let bodyFat {
-//                                Text("Body Fat: ")
-//                                    .font(.system(size: 28, weight: .semibold)) +
-//                                Text(bodyFat, format: .percent)
-//                                    .font(.system(size: 40, weight: .bold))
-//                            } else {
-//                                HStack {
-//                                    Text("Body Fat: ")
-//                                        .font(.system(size: 28, weight: .semibold))
-//                                    ProgressView()
-//                                        .frame(width: 40, height: 40)
-//                                }
-//                            }
+                            if let bodyFat {
+                                Text("Body Fat: ")
+                                    .font(.system(size: 28, weight: .semibold)) +
+                                Text(bodyFat, format: .number)
+                                    .font(.system(size: 40, weight: .bold)) + 
+                                Text("%")
+                                    .font(.system(size: 28, weight: .semibold))
+                            } else {
+                                HStack {
+                                    Text("Body Fat: ")
+                                        .font(.system(size: 28, weight: .semibold))
+                                    ProgressView()
+                                        .frame(width: 40, height: 40)
+                                }
+                            }
                         }
                     }
                 }
