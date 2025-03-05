@@ -29,16 +29,20 @@ struct ResultScreen: View {
                                         .font(.system(size: 40, weight: .bold))
                                 }
                                 
-                                if let hrv {
-                                    Text("HRV: ")
-                                        .font(.system(size: 28, weight: .semibold)) +
-                                    Text(hrv, format: .number)
-                                        .font(.system(size: 40, weight: .bold))
-                                }
-                                
-                                if hr == nil && hrv == nil {
+                                if hr == nil {
                                     Text("No data")
                                 }
+                                
+//                                if let hrv {
+//                                    Text("HRV: ")
+//                                        .font(.system(size: 28, weight: .semibold)) +
+//                                    Text(hrv, format: .number)
+//                                        .font(.system(size: 40, weight: .bold))
+//                                }
+                                
+//                                if hr == nil && hrv == nil {
+//                                    Text("No data")
+//                                }
                             }
                         }
                         FeatureSection(feature: .mood) {

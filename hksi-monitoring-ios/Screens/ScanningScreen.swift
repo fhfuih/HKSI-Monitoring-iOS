@@ -47,16 +47,20 @@ struct ScanningScreen: View {
                                     .font(.system(size: 40, weight: .bold))
                             }
                             
-                            if let hrv {
-                                Text("HRV: ")
-                                    .font(.system(size: 28, weight: .semibold)) +
-                                Text(hrv, format: .number)
-                                    .font(.system(size: 40, weight: .bold))
-                            }
-
-                            if hr == nil && hrv == nil {
+                            if hr == nil {
                                 ProgressView()
                             }
+                            
+//                            if let hrv {
+//                                Text("HRV: ")
+//                                    .font(.system(size: 28, weight: .semibold)) +
+//                                Text(hrv, format: .number)
+//                                    .font(.system(size: 40, weight: .bold))
+//                            }
+
+//                            if hr == nil && hrv == nil {
+//                                ProgressView()
+//                            }
                         }
                     }
                     FeatureSection(feature: .body) {

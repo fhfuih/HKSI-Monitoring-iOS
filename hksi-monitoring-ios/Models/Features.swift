@@ -19,7 +19,8 @@ extension FeatureType {
     var title: String {
         switch self {
         case .hr:
-            "Heart Rate & HRV"
+//            "Heart Rate & HRV"
+            "Heart Rate"
         case .mood:
             "Moods"
         case .body:
