@@ -164,7 +164,8 @@ fileprivate struct StartButton: View {
                 
                 try await webRTCModel.connect()
                 cameraModel.shouldDetectFace = true
-                routeModel.paths.append(.scanning)
+                routeModel.push(.questionnaire)
+//                routeModel.paths.append(.scanning)
             } catch {
                 errorMessage = "Error starting a user session: \(error)"
             }

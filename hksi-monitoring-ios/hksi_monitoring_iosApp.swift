@@ -49,6 +49,10 @@ struct hksi_monitoring_iosApp: App {
               ScanningScreen()
             case .result:
               ResultScreen()
+                
+            case .questionnaire:
+                QuestionnaireScreen()
+        
             /// Please ignore the following warning
             @unknown default:
               Text("Internal error")

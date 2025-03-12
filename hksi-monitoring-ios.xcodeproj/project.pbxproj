@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C368EA22D5C2E7E001803C7 /* Withings in Frameworks */ = {isa = PBXBuildFile; productRef = 0C368EA12D5C2E7E001803C7 /* Withings */; };
+		0C44CD562D80CED70051290C /* QuestionnaireScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C44CD552D80CEC50051290C /* QuestionnaireScreen.swift */; };
 		4BC68348C1092FBCE2297E31 /* Pods_hksi_monitoring_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */; };
 		F3065C722C9DD78E00B442AA /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3065C712C9DD78E00B442AA /* DataModel.swift */; };
 		F30F65142C5389590060EA56 /* hksi_monitoring_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65132C5389590060EA56 /* hksi_monitoring_iosApp.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C44CD552D80CEC50051290C /* QuestionnaireScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireScreen.swift; sourceTree = "<group>"; };
 		34A2103441AE4E9E2D05BB69 /* Pods-hksi-monitoring-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hksi-monitoring-ios.release.xcconfig"; path = "Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios.release.xcconfig"; sourceTree = "<group>"; };
 		A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hksi_monitoring_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7315ED3CFB9D595702F694 /* Pods-hksi-monitoring-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hksi-monitoring-ios.debug.xcconfig"; path = "Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 		F30F65852C5394B20060EA56 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				0C44CD552D80CEC50051290C /* QuestionnaireScreen.swift */,
 				F30F65812C5394B20060EA56 /* ResultScreen.swift */,
 				F30F65822C5394B20060EA56 /* ScanningScreen.swift */,
 				F30F65832C5394B20060EA56 /* SettingsScreen.swift */,
@@ -463,6 +466,7 @@
 				F30F65772C5394A60060EA56 /* FeatureIcon.swift in Sources */,
 				F3065C722C9DD78E00B442AA /* DataModel.swift in Sources */,
 				F30F65892C5394B20060EA56 /* ResultScreen.swift in Sources */,
+				0C44CD562D80CED70051290C /* QuestionnaireScreen.swift in Sources */,
 				F392260F2CBA840F001B7B68 /* Errors.swift in Sources */,
 				F358DCE02CA19EAE00093389 /* ButtonStyles.swift in Sources */,
 				F30F65792C5394A60060EA56 /* ScaleDeviceButtonLabel.swift in Sources */,

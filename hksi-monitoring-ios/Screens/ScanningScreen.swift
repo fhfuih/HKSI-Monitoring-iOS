@@ -11,6 +11,10 @@ fileprivate let DURATION_DISCARD: Double = 2
 fileprivate let DURATION_TOTAL: Double = 36
 fileprivate let DURATION_SENDING: Double = 34
 
+//fileprivate let DURATION_DISCARD: Double = 2
+//fileprivate let DURATION_TOTAL: Double = 3
+//fileprivate let DURATION_SENDING: Double = 1
+
 struct ScanningScreen: View {
     /// XCode preview constantly crash. I have to pause the camera and countdown thing and actually run it to develop UI
     private let DEBUG = false

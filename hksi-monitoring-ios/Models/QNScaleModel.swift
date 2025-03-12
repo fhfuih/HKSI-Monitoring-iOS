@@ -470,7 +470,7 @@ extension QNScaleModel: QNBleConnectionChangeListener {
 
 extension QNScaleModel: QNLogProtocol {
     func onLog(_ log: String) {
-        logger.debug("The Content of LogListener: \(log)")
+//        logger.debug("The Content of LogListener: \(log)")
     }
 }
 

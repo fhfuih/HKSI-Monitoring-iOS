@@ -31,8 +31,9 @@ class RouteModel {
 }
 
 enum Route {
-//    case welcome /// The master view does not need to be presented here
+    case welcome /// The master view does not need to be presented here
     case settings
     case scanning
     case result
+    case questionnaire
 }

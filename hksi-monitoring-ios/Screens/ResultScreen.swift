@@ -178,8 +178,22 @@ struct ResultScreen: View {
         webRTCModel.finalValue = nil
         qnScaleModel.intermediateWeight = nil
         qnScaleModel.finalValue = nil
-        routeModel.pop()
+        
+        print("Finish result screen 1")
+        
+        // routeModel.pop() // 原逻辑
+        routeModel.pushReplaceTop(.questionnaire) // 新逻辑：跳转到问卷
+        
+        print("Finish result screen 2")
     }
+    
+//    private func finish() {
+//        webRTCModel.intermediateValue = nil
+//        webRTCModel.finalValue = nil
+//        qnScaleModel.intermediateWeight = nil
+//        qnScaleModel.finalValue = nil
+//        routeModel.pop()
+//    }
 }
 
 #Preview {
