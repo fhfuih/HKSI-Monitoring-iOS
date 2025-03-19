@@ -120,6 +120,7 @@ class WebRTCClient: NSObject {
             if _dataChannel.readyState == .open {
                 let buffer = RTCDataBuffer(data: message.data(using: String.Encoding.utf8)!, isBinary: false)
                 _dataChannel.sendData(buffer)
+//                logger.debug("Message sent: \(message)")
             }else {
                 logger.warning("data channel is not ready state")
             }

@@ -11,6 +11,11 @@ struct ResultScreen: View {
     @Environment(WebRTCModel.self) var webRTCModel: WebRTCModel
     @Environment(RouteModel.self) var routeModel: RouteModel
     @Environment(QNScaleModel.self) var qnScaleModel: QNScaleModel
+    
+    // 添加 WebRTCModel 环境对象
+//    @Environment(WebRTCModel.self) var webRTCModelSend: WebRTCModel
+    
+//    @State private var bodyDataDict: [String: Double] = [:]
 
     var body: some View {
         VStack(spacing: 20) {
@@ -63,9 +68,27 @@ struct ResultScreen: View {
                             VStack {
                                 let weight = qnScaleModel.finalValue?.weight
                                 let bodyFat = qnScaleModel.finalValue?.bodyFat
-//                                let weight = qnScaleModel.intermediateWeight
+                                
+//                                if weight == nil && bodyFat == nil {
+//                                    logger.debug("No bady data needs to send to backend")
+//                                } else{
+//                                    if bodyFat == nil{
+//                                        webRTCModelSend.sendWeightData(weightData: weight)
+//                                        logger.debug("No badyfat data needs to send to backend, only send weight data")
+//                                    }
+//                                    else{
+//                                        webRTCModelSend.sendBodyData(weightData: weight, bodyfatData: bodyFat)
+//                                        logger.debug("Send weight and bodyfat data to backend")
+//                                    }
+//                                }
+                                
+//                                var bodyDataDict: [String: Double] = [:]
+
+//                                // Update data dictionary outside ViewBuilder
+//                                updateBodyDataDict(weight: weight, bodyFat: bodyFat)
                                 
                                 if let weight {
+//                                    bodyDataDict["Weight"] = weight
                                     Text("Weight: ")
                                         .font(.system(size: 28, weight: .semibold)) +
                                     Text(weight, format: .number)
@@ -73,7 +96,6 @@ struct ResultScreen: View {
                                     Text("kg")
                                         .font(.system(size: 28, weight: .semibold))
                                 } else {
-                                    
                                     Text("Weight: ")
                                         .font(.system(size: 28, weight: .semibold)) +
                                     Text("No data")
@@ -81,6 +103,7 @@ struct ResultScreen: View {
                                 }
                                 
                                 if let bodyFat {
+//                                    bodyDataDict["Body Fat"] = bodyFat
                                     Text("Body Fat: ")
                                         .font(.system(size: 28, weight: .semibold)) +
 //                                    Text(bodyFat, format: .percent)
@@ -94,7 +117,26 @@ struct ResultScreen: View {
                                     Text("No data")
                                         .font(.system(size: 28))
                                 }
+//                                webRTCModelSend.sendBodyData(bodyResult: bodyDataDict)
                             }
+                            .onAppear{
+                                let weight = qnScaleModel.finalValue?.weight
+                                let bodyFat = qnScaleModel.finalValue?.bodyFat
+                                
+                                if weight == nil && bodyFat == nil {
+                                    logger.debug("No bady data needs to send to backend")
+                                } else{
+                                    if bodyFat == nil{
+                                        webRTCModel.sendWeightData(weightData: weight)
+                                        logger.debug("No badyfat data needs to send to backend, only send weight data")
+                                    }
+                                    else{
+                                        webRTCModel.sendBodyData(weightData: weight, bodyfatData: bodyFat)
+                                        logger.debug("Send weight and bodyfat data to backend")
+                                    }
+                                }
+                            }
+
                         }
                         FeatureSection(feature: .skin) {
                             VStack {
@@ -171,7 +213,29 @@ struct ResultScreen: View {
             }
         }
         .toolbar(.hidden)
+        
+
     }
+    
+//    // Separate function to update the dictionary
+//    private func updateBodyDataDict(weight: Double?, bodyFat: Double?) {
+//        var newDict: [String: Double] = [:]
+//        if let weight = weight {
+//            newDict["Weight"] = weight
+//        }
+//        if let bodyFat = bodyFat {
+//            newDict["Body Fat"] = bodyFat
+//        }
+//        bodyDataDict = newDict
+//    }
+//
+//    private func sendBodyData() {
+//        do {
+//            webRTCModelSend.sendBodyData(bodyResult: bodyDataDict)
+//        } catch {
+//            logger.error("Failed to submit data")
+//        }
+//    }
     
     private func finish() {
         webRTCModel.intermediateValue = nil
