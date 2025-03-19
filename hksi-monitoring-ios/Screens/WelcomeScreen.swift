@@ -12,6 +12,9 @@ struct WelcomeScreen: View {
     @State var showAlert: Bool = false
     @State var alertMessage: String?
     
+    @State var showParticipantIDAlert: Bool = false
+    @State var participantID: String = ""
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -87,8 +90,12 @@ struct WelcomeScreen: View {
                     StartButton(
                         loading: $isStartingSession,
                         hasError: $showAlert,
-                        errorMessage: $alertMessage)
-                        .frame(width: buttonWidth, height: buttonHeight)
+                        showParticipantIDAlert: $showParticipantIDAlert,
+                        participantID: $participantID,
+                        errorMessage: $alertMessage
+                    )
+                    .frame(width: buttonWidth, height: buttonHeight)
+                    
                 }
                     .font(.system(size: 50))
             }
@@ -106,72 +113,103 @@ struct WelcomeScreen: View {
 }
 
 fileprivate struct StartButton: View {
-    @Environment(CameraModel.self) var cameraModel: CameraModel
-    @Environment(RouteModel.self) var routeModel: RouteModel
-    @Environment(WebRTCModel.self) var webRTCModel: WebRTCModel
-    @Environment(QNScaleModel.self) var qnScaleModel: QNScaleModel
-    
-    @Binding var loading: Bool
-    @Binding var hasError: Bool
-    @Binding var errorMessage: String? {
-        didSet {
-            hasError = errorMessage != nil
-            logger.error("Error when starting session: \(String(describing: errorMessage))")
+        @Environment(CameraModel.self) var cameraModel: CameraModel
+        @Environment(RouteModel.self) var routeModel: RouteModel
+        @Environment(WebRTCModel.self) var webRTCModel: WebRTCModel
+        @Environment(QNScaleModel.self) var qnScaleModel: QNScaleModel
+
+        @Binding var loading: Bool
+        @Binding var hasError: Bool
+
+        @Binding var showParticipantIDAlert: Bool
+        @Binding var participantID: String
+
+
+        @Binding var errorMessage: String? {
+            didSet {
+                hasError = errorMessage != nil
+                logger.error("Error when starting session: \(String(describing: errorMessage))")
+            }
+        }
+
+        var body: some View {
+            Button(action: { showParticipantIDAlert = true }) {
+                if loading {
+                    ProgressView()
+                } else {
+                    Text("Start")
+                        .padding()
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(isDisabled ? Color.gray : Color.navy)
+                        .cornerRadius(50)
+                }
+            }
+            .disabled(isDisabled || loading)
+            .alert("Please enter Participant ID", isPresented: $showParticipantIDAlert) {
+                TextField("Enter ID", text: $participantID)
+                Button("Cancel", role: .cancel) {}
+                Button("Confirm") {
+                    if !participantID.isEmpty {
+                        logger.debug("Participant ID type: \(type(of: participantID)) | Value: \(participantID)")
+                        Task {
+                            await startSession()
+//                            participantID = ""  // 确保 session 启动后再清空
+                        }
+                    }
+                }.disabled(participantID.isEmpty)
+            }
+            .onDisappear {
+                // 当 alert 关闭时清空 participantID
+                participantID = ""
+            }
+        }
+
+        var isDisabled: Bool {
+            cameraModel.selectedCaptureDevice == nil && !isInPreview()
+        }
+
+        private func startSession() {
+            loading = true
+            
+            guard webRTCModel.signalingServer != "" else {
+                errorMessage = "Missing server URL configuration"
+                return
+            }
+            
+            Task { @MainActor in
+                do {
+                    defer {
+                        loading = false
+                    }
+                    
+//                    try await webRTCModel.connect()
+//                    logger.debug("WebRTC connected: \(webRTCModel.isConnected)")
+                    
+                    // TODO: make it parallel to await webRTCModel.connect()
+                    do {
+                        try await qnScaleModel.waitForSelectedDevice()
+                    } catch {
+                        logger.warning("Error connecting to scale device: \(error)")
+                    }
+                    
+                    try await webRTCModel.connect()
+          
+                    // send to backend
+                    webRTCModel.sendParticipantID(stringID: participantID)
+                    logger.debug("Already sent Participant ID to backend")
+                    
+                    cameraModel.shouldDetectFace = true
+//                    routeModel.push(.questionnaire)
+                    routeModel.paths.append(.scanning)
+                } catch {
+                    errorMessage = "Error starting a user session: \(error)"
+                }
+            }
         }
     }
 
-    var body: some View {
-        Button(action: start) {
-            if loading {
-                ProgressView()
-            } else {
-                Text("Start")
-                    .padding(.all)
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(isDisabled ? .gray : .navy)
-                    .cornerRadius(50)
-            }
-        }
-        .disabled(isDisabled || loading)
-    }
-    
-    var isDisabled: Bool {
-        cameraModel.selectedCaptureDevice == nil && !isInPreview()
-    }
-    
-    private func start() {
-        loading = true
-        
-        guard webRTCModel.signalingServer != "" else {
-            errorMessage = "Missing server URL configuration"
-            return
-        }
-        
-        Task { @MainActor in
-            do {
-                defer {
-                    loading = false
-                }
-                
-                // TODO: make it parallel to `await webRTCModel.connect()`
-                do {
-                    try await qnScaleModel.waitForSelectedDevice()
-                } catch {
-                    logger.warning("Error connecting to scale device: \(error)")
-                }
-                
-                try await webRTCModel.connect()
-                cameraModel.shouldDetectFace = true
-                routeModel.push(.questionnaire)
-//                routeModel.paths.append(.scanning)
-            } catch {
-                errorMessage = "Error starting a user session: \(error)"
-            }
-        }
-    }
-}
 
 fileprivate struct BottomStatusIndicator: View {
     @Environment(QNScaleModel.self) var qnScaleModel: QNScaleModel

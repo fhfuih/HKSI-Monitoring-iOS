@@ -117,6 +117,59 @@ class WebRTCModel {
         logger.debug("WebRTC sending end session message")
     }
     
+    func sendWeightData(weightData: Double?) {
+        var weightDataDict: [String: Double?] = [:]
+        
+        weightDataDict["Weight"] = weightData
+        
+        // 执行数据发送
+        do {
+            let jsonData = try JSONEncoder().encode(weightDataDict)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                webRTCClient.sendMessge(message: jsonString)
+                logger.debug("Successfully sent weight Data: \(jsonString)")
+            }
+        } catch {
+            logger.error("Failed to submit weight data")
+        }
+    }
+    
+    func sendBodyData(weightData: Double?, bodyfatData: Double?) {
+        var bodyDataDict: [String: Double?] = [:]
+        
+        bodyDataDict["Weight"] = weightData
+        bodyDataDict["Body Fat"] = bodyfatData
+        
+        // 执行数据发送
+        do {
+            let jsonData = try JSONEncoder().encode(bodyDataDict)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                webRTCClient.sendMessge(message: jsonString)
+                logger.debug("Successfully sent Body Data: \(jsonString)")
+            }
+        } catch {
+            logger.error("Failed to submit body data")
+        }
+    }
+    
+    func sendParticipantID(stringID: String) {
+        webRTCClient.sendMessge(message: stringID)
+        logger.debug("Successfully sent Participant ID: \(stringID)")
+    }
+    
+    func sendSurveyData(surveyResult: [String: Int]) {
+        // 执行数据发送
+        do {
+            let jsonData = try JSONEncoder().encode(surveyResult)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                webRTCClient.sendMessge(message: jsonString)
+                logger.debug("Successfully sent Survey Data: \(jsonString)")
+            }
+        } catch {
+            logger.error("Failed to submit survey data")
+        }
+    }
+    
 //    private func sendCandidate(iceCandidate: RTCIceCandidate){
 //        let candidate = Candidate.init(sdp: iceCandidate.sdp, sdpMLineIndex: iceCandidate.sdpMLineIndex, sdpMid: iceCandidate.sdpMid!)
 //        let signalingMessage = SignalingMessage.init(type: "candidate", sessionDescription: nil, candidate: candidate)

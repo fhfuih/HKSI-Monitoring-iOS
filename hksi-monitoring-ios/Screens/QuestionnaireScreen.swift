@@ -11,7 +11,7 @@ struct QuestionnaireScreen: View {
     @Environment(RouteModel.self) var routeModel: RouteModel
     
     // 添加 WebRTCModel 环境对象
-    @Environment(WebRTCModel.self) var webRTCModelSend: WebRTCModel
+    @Environment(WebRTCModel.self) var webRTCModel: WebRTCModel
     
     @State private var selectedAnswers: [String: Int] = [:]
     
@@ -34,11 +34,7 @@ struct QuestionnaireScreen: View {
         
         // 3. 执行数据发送
         do {
-            let jsonData = try JSONEncoder().encode(selectedAnswers)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-//                try await webRTCModelSend.sendMessge(message: jsonString)
-                logger.debug("Successful data submission: \(jsonString)")
-            }
+            webRTCModel.sendSurveyData(surveyResult: selectedAnswers)
         } catch {
             logger.error("Failed to submit data")
         }
@@ -110,7 +106,11 @@ struct QuestionnaireScreen: View {
                                         Text("\(value)")
                                             .font(.system(size: 18, weight: .bold))
                                             .frame(width: 110, height: 30) // 调整按钮大小
-                                            .background(selectedAnswers[questions[index].0] == value ? Color.blue.opacity(0.9) : Color.blue.opacity(0.3)) // 选中和未选中的颜色
+                                            .background(selectedAnswers[questions[index].0] == value ?
+                                                Color(red: 0.4, green: 0.5, blue: 0.7) : // 选中状态的蓝灰色
+                                                Color(red: 0.7, green: 0.75, blue: 0.85) // 未选中状态的浅蓝灰色
+                                            )
+//                                            .background(selectedAnswers[questions[index].0] == value ? Color.blue.opacity(0.9) : Color.blue.opacity(0.3)) // 选中和未选中的颜色
                                             .foregroundColor(.white)
                                             .cornerRadius(8) // 设置圆角
                                     }
