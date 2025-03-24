@@ -133,7 +133,22 @@ fileprivate struct StartButton: View {
         }
 
         var body: some View {
-            Button(action: { showParticipantIDAlert = true }) {
+            Button(action: {
+                showParticipantIDAlert = true
+
+                // 在弹出输入框时就预先连接
+                if webRTCModel.signalingServer != "" {
+                    Task {
+                        do {
+                            try await webRTCModel.connect()
+                            logger.debug("Pre-connected to WebRTC server")
+                        } catch {
+                            logger.error("WebRTC pre-connection failed: \(error)")
+                            errorMessage = "WebRTC connection failed"
+                        }
+                    }
+                }
+            }) {
                 if loading {
                     ProgressView()
                 } else {
@@ -149,11 +164,15 @@ fileprivate struct StartButton: View {
             .disabled(isDisabled || loading)
             .alert("Please enter Participant ID", isPresented: $showParticipantIDAlert) {
                 TextField("Enter ID", text: $participantID)
-                Button("Cancel", role: .cancel) {}
+                Button("Cancel", role: .cancel) {
+//                    logger.debug("User canceled input. Disconnecting WebRTC.")
+//                    webRTCModel.disconnect()
+                }
                 Button("Confirm") {
                     if !participantID.isEmpty {
                         logger.debug("Participant ID type: \(type(of: participantID)) | Value: \(participantID)")
                         Task {
+//                            try await webRTCModel.connect()
                             await startSession()
 //                            participantID = ""  // 确保 session 启动后再清空
                         }
@@ -194,7 +213,7 @@ fileprivate struct StartButton: View {
                         logger.warning("Error connecting to scale device: \(error)")
                     }
                     
-                    try await webRTCModel.connect()
+//                    try await webRTCModel.connect()    // 尝试改变一下首次建立connect的地方
           
                     // send to backend
                     webRTCModel.sendParticipantID(stringID: participantID)

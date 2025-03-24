@@ -23,7 +23,7 @@ class WebRTCModel {
             if onSessionEnd != nil {
                 onSessionEnd!()
             }
-            disconnect()
+//            disconnect()
         }
     }
     
@@ -115,6 +115,10 @@ class WebRTCModel {
         
         /// Clear the states, so that the next person won't see the 
         logger.debug("WebRTC sending end session message")
+        
+        webRTCClient.stopSendingVideoTrack()
+        logger.debug("Stop getting frames from the camera & Video track no longer transmits data")
+        
     }
     
     func sendWeightData(weightData: Double?) {
@@ -152,9 +156,19 @@ class WebRTCModel {
         }
     }
     
+//    func sendParticipantID(stringID: String) {
+//        webRTCClient.sendMessge(message: stringID)
+//        logger.debug("Successfully sent Participant ID: \(stringID)")
+//    }
     func sendParticipantID(stringID: String) {
-        webRTCClient.sendMessge(message: stringID)
-        logger.debug("Successfully sent Participant ID: \(stringID)")
+        let messageDict = ["ParticipantID": stringID]
+        if let jsonData = try? JSONSerialization.data(withJSONObject: messageDict),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            webRTCClient.sendMessge(message: jsonString)
+            logger.debug("Successfully sent Participant ID: \(jsonString)")
+        } else {
+            logger.error("Failed to encode Participant ID as JSON")
+        }
     }
     
     func sendSurveyData(surveyResult: [String: Int]) {
@@ -226,6 +240,7 @@ extension WebRTCModel: WebRTCClientDelegate {
         
         /// Update data
         if data.final {
+            logger.debug("Currently, it is data.final")
             if finalValue != nil {
                 data.updateNilWith(other: finalValue!)
             }

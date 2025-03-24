@@ -166,6 +166,9 @@ struct QuestionnaireScreen: View {
                 
                 submitQuestions()
                 logger.debug("Submitted answers of questionnaire")
+                
+                webRTCModel.disconnect()
+                
                 routeModel.pop()
                 
             }

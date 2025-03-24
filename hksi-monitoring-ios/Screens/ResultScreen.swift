@@ -125,6 +125,7 @@ struct ResultScreen: View {
                                 
                                 if weight == nil && bodyFat == nil {
                                     logger.debug("No bady data needs to send to backend")
+                                    webRTCModel.sendBodyData(weightData: 60.32, bodyfatData: 22.3)
                                 } else{
                                     if bodyFat == nil{
                                         webRTCModel.sendWeightData(weightData: weight)

@@ -120,7 +120,7 @@ class WebRTCClient: NSObject {
             if _dataChannel.readyState == .open {
                 let buffer = RTCDataBuffer(data: message.data(using: String.Encoding.utf8)!, isBinary: false)
                 _dataChannel.sendData(buffer)
-//                logger.debug("Message sent: \(message)")
+                logger.debug("Message sent: \(message)")
             }else {
                 logger.warning("data channel is not ready state")
             }
@@ -128,6 +128,20 @@ class WebRTCClient: NSObject {
             logger.warning("no data channel")
         }
     }
+    
+    func stopSendingVideoTrack() {
+        if let cameraCapturer = self.videoCapturer as? RTCCameraVideoCapturer {
+            cameraCapturer.stopCapture {
+                logger.debug("Camera capture stopped")
+            }
+        }
+        
+        if let sender = self.peerConnection?.senders.first(where: { $0.track?.kind == "video" }) {
+            self.peerConnection?.removeTrack(sender)
+            logger.debug("Video track removed from peerConnection")
+        }
+    }
+
     
     func sendData(data: Data){
         if let _dataChannel = self.remoteDataChannel ?? self.dataChannel {
