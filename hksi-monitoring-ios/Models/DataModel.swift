@@ -15,15 +15,25 @@ import Foundation
 class FramePrediction: Codable {
     var hr: Double?
     var hrv: Double?
+    var hrList: [Double]? = []
     
     var fatigue: Double? /// A 0~100 level of fatigue
+    var fatigueList: [Double]? = []
     
     var darkCircleLeft: Bool?
     var darkCircleRight: Bool?
+    var darkCircleList: [Int]? = []
+    
     var pimpleCount: Int?
+    var pimpleCountList: [Int]? = []
     
     /// Whether it is final or not
     var final: Bool
+    var person_id: String?
+    var participant_id: String?
+    
+    var weightList: [Double]? = []
+    var bodtfatList: [Double]? = []
     
     func updateNilWith(other: FramePrediction) {
         if hr == nil {

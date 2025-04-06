@@ -266,7 +266,8 @@ struct ScanningScreen: View {
         /// Disconnect WebRTC
         webRTCModel.endSession(onEnd: {
             logger.debug("ScanningScreen navigating away because an end data is received")
-            routeModel.pushReplaceTop(.result)
+//            routeModel.pushReplaceTop(.result)
+            routeModel.pushReplaceTop(.historyresult)
         })
         
         /// Disconnect scale

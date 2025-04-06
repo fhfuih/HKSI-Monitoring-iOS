@@ -49,6 +49,8 @@ struct hksi_monitoring_iosApp: App {
               ScanningScreen()
             case .result:
               ResultScreen()
+            case .historyresult:
+              HistoryResultScreen()
                 
             case .questionnaire:
                 QuestionnaireScreen()

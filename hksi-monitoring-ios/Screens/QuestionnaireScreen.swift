@@ -9,6 +9,7 @@ import SwiftUI
 struct QuestionnaireScreen: View {
 //    @Environment(RouteModel.self) var routeModel
     @Environment(RouteModel.self) var routeModel: RouteModel
+    @Environment(QNScaleModel.self) var qnScaleModel: QNScaleModel
     
     // 添加 WebRTCModel 环境对象
     @Environment(WebRTCModel.self) var webRTCModel: WebRTCModel
@@ -168,6 +169,8 @@ struct QuestionnaireScreen: View {
                 logger.debug("Submitted answers of questionnaire")
                 
                 webRTCModel.disconnect()
+                webRTCModel.finalValue = nil
+//                qnScaleModel.finalValue = nil
                 
                 routeModel.pop()
                 

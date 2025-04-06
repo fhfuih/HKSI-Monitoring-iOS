@@ -1,13 +1,14 @@
 //
-//  ResultScreen.swift
-//  HKSI Booth
+//  HistoryResultScreen.swift
+//  hksi-monitoring-ios
 //
-//  Created by 黄泽宇 on 16/7/2024.
+//  Created by chen qiaoyi on 25/3/2025.
 //
 
 import SwiftUI
+import Charts
 
-struct ResultScreen: View {
+struct HistoryResultScreen: View {
     @Environment(WebRTCModel.self) var webRTCModel: WebRTCModel
     @Environment(RouteModel.self) var routeModel: RouteModel
     @Environment(QNScaleModel.self) var qnScaleModel: QNScaleModel
@@ -19,42 +20,159 @@ struct ResultScreen: View {
                     GridRow {
                         FeatureSection(feature: .hr) {
                             VStack {
-                                let hr = webRTCModel.finalValue?.hr
-                                let hrv = webRTCModel.finalValue?.hrv
+
+//                                let hr_list = webRTCModel.finalValue?.hrList
+                                let hrList: [Double] = [72.0, 75.5, 78.2, 74.8, 76.0, 73.3, 77.1]
                                 
-                                if let hr {
-                                    Text("HR: ")
-                                        .font(.system(size: 28, weight: .semibold)) +
-                                    Text(hr, format: .number)
-                                        .font(.system(size: 40, weight: .bold))
-                                }
-                                
-                                if hr == nil {
-                                    Text("No data")
-                                }
-                                
-//                                if let hrv {
-//                                    Text("HRV: ")
-//                                        .font(.system(size: 28, weight: .semibold)) +
-//                                    Text(hrv, format: .number)
-//                                        .font(.system(size: 40, weight: .bold))
-//                                }
-                                
-//                                if hr == nil && hrv == nil {
-//                                    Text("No data")
-//                                }
+                                // 判断一下hrList长度，长度为1的时候可以直接按照之前的样子显示
+//                                if !hrList.isEmpty {
+                                if hrList.count >= 2 {
+                                    let lastIndex = hrList.count - 1
+                                    Text("HR (bpm)")
+                                        .font(.headline)
+
+                                    Chart {
+                                        ForEach(Array(hrList.enumerated()), id: \.offset) { index, value in
+                                            let label = String(index + 1)                // 横轴为 1 ~ 7
+                                            let barColor: Color = index == lastIndex ? .red : .blue
+
+                                            BarMark(
+                                                x: .value("Measurement", label),
+                                                y: .value("HR", value)
+                                            )
+                                            .foregroundStyle(barColor)
+
+                                            
+                                            // 可选：在最后一项上方加标签
+                                            if index == lastIndex {
+                                                PointMark(
+                                                    x: .value("Measurement", label),
+                                                    y: .value("HR", value)
+                                                )
+//                                                .foregroundStyle(index == hrList.count - 1 ? Color.red : Color.blue)
+                                                .annotation(position: .top) {
+                                                    Text("Latest: \(Int(value))")
+                                                        .font(.caption)
+                                                        .foregroundColor(.red)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    .frame(height: 220)
+                                    .padding(.top, 10)
+                                } else if (hrList.count == 1) {
+                                        let hr = webRTCModel.finalValue?.hr
+                                        let hrv = webRTCModel.finalValue?.hrv
+                                    
+                                        if let hr {
+                                             Text("HR: ")
+                                                .font(.system(size: 28, weight: .semibold)) +
+                                             Text(hr, format: .number)
+                                                .font(.system(size: 40, weight: .bold))
+                                        }
+                                    
+                                        if hr == nil {
+                                            Text("No data")
+                                        }
+                                                                    
+                                    }
+                                    else {
+                                        Text("No data")
+                                    }
                             }
                         }
                         FeatureSection(feature: .mood) {
-                            if let fatigue = webRTCModel.finalValue?.fatigue {
-                                VStack {
-                                    Text("Fatigue level: ")
-                                        .font(.system(size: 28, weight: .semibold))
-                                    Text(fatigue, format: .percent)
-                                        .font(.system(size: 40, weight: .bold))
+                            let fatigueList: [Double] = [0.5, 0.75, 0.5, 0.5, 0.75, 0.5, 1]
+                            
+                            if fatigueList.count >= 2 {
+                                let lastIndex = fatigueList.count - 1
+                                Text("Fatigue Level (%)")
+                                    .font(.headline)
+                                Chart {
+                                    // 折线和描点
+                                    ForEach(Array(fatigueList.enumerated()), id: \.offset) { index, value in
+                                        let label = String(index + 1)
+                                        let isLast = index == lastIndex
+                                        
+                                        LineMark(
+                                            x: .value("Measurement", label),
+                                            y: .value("Fatigue Level", value * 100)
+                                        )
+                                        .foregroundStyle(.blue) // 整体线的颜色
+                                        
+                                        PointMark(
+                                            x: .value("Measurement", label),
+                                            y: .value("Fatigue Level", value * 100)
+                                        )
+                                        .foregroundStyle(isLast ? .red : .blue)
+                                        
+                                        if isLast {
+                                            // 为最后一个点加注释
+                                            PointMark(
+                                                x: .value("Measurement", label),
+                                                y: .value("Fatigue Level", value * 100)
+                                            )
+                                            .symbolSize(220) // 比默认大（默认约为 30）
+                                            .foregroundStyle(.red)
+                                            .annotation(position: .top) {
+                                                Text("Latest: \(Int(value * 100))")
+                                                    .font(.caption)
+                                                    .foregroundColor(.red)
+                                            }
+                                            
+                                            // 再画小蓝点，覆盖在大红点上方
+                                            PointMark(
+                                                x: .value("Measurement", label),
+                                                y: .value("Fatigue Level", value * 100)
+                                            )
+//                                            .symbolSize(30)
+                                            .foregroundStyle(.blue)
+                                        }
+                                    }
                                 }
-                            } else {
+                                .frame(height: 220)
+                                .padding(.top, 10)
+                                .chartYScale(domain: 0...100)
+                                //                                Chart {
+                                //                                    ForEach(Array(fatigueList.enumerated()), id: \.offset) { index, value in
+                                //                                        let label = String(index + 1)
+                                //                                        let barColor: Color = index == lastIndex ? .red : .blue
+                                //                                        BarMark(
+                                //                                            x: .value("Measurement", label),
+                                //                                            y: .value("Fatigue Level", value * 100)
+                                //                                        )
+                                //                                        .foregroundStyle(barColor)
+                                //
+                                //                                        // 可选：在最后一项上方加标签
+                                //                                        if index == lastIndex  {
+                                //                                            PointMark(
+                                //                                                x: .value("Measurement", label),
+                                //                                                y: .value("Fatigue Level", value * 100)
+                                //                                            )
+                                ////                                           .foregroundStyle(barColor)
+                                //                                            .annotation(position: .top) {
+                                //                                                Text("Latest: \(Int(value * 100))")
+                                //                                                    .font(.caption)
+                                //                                                    .foregroundColor(.red)
+                                //                                            }
+                                //                                        }
+                                //                                    }
+                                //                                }
+                                //                                .frame(height: 220)
+                                //                                .padding(.top, 10)
+                            } else if fatigueList.isEmpty {
                                 Text("No data")
+                            } else {
+                                if let fatigue = webRTCModel.finalValue?.fatigue {
+                                    VStack {
+                                        Text("Fatigue level: ")
+                                            .font(.system(size: 28, weight: .semibold))
+                                        Text(fatigue, format: .percent)
+                                            .font(.system(size: 40, weight: .bold))
+                                    }
+                                } else {
+                                    Text("No data")
+                                }
                             }
                         }
                     }
@@ -140,7 +258,6 @@ struct ResultScreen: View {
                                      let darkCircleRight = webRTCModel.finalValue?.darkCircleRight
                                      let pimpleCount = webRTCModel.finalValue?.pimpleCount
 
-
                                      if let darkCircleLeft {
                                          Text("Dark circle (left): ")
                                              .font(.system(size: 28, weight: .semibold)) +
@@ -170,21 +287,21 @@ struct ResultScreen: View {
 //                            VStack {
 //                                let darkCirclesCount = webRTCModel.finalValue?.darkCircles?.count
 //                                let pimpleCount = webRTCModel.finalValue?.pimples?.count
-//                                
+//
 //                                if let darkCirclesCount {
 //                                    Text("Dark circles around eyes: ")
 //                                        .font(.system(size: 28, weight: .semibold))
 //                                    Text(darkCirclesCount, format: .percent)
 //                                        .font(.system(size: 40, weight: .bold))
 //                                }
-//                                
+//
 //                                if let pimpleCount {
 //                                    Text("Pimples: ")
 //                                        .font(.system(size: 28, weight: .semibold))
 //                                    Text(pimpleCount, format: .percent)
 //                                        .font(.system(size: 40, weight: .bold))
 //                                }
-//                                
+//
 //                                if darkCirclesCount == nil && pimpleCount == nil {
 //                                    Text("No data")
 //                                }
@@ -240,12 +357,12 @@ struct ResultScreen: View {
         qnScaleModel.intermediateWeight = nil
 //        qnScaleModel.finalValue = nil
         
-        print("Finish result screen 1")
+//        print("Finish result screen 1")
         
         // routeModel.pop() // 原逻辑
         routeModel.pushReplaceTop(.questionnaire) // 新逻辑：跳转到问卷
         
-        print("Finish result screen 2")
+//        print("Finish result screen 2")
     }
     
 //    private func finish() {
@@ -258,7 +375,7 @@ struct ResultScreen: View {
 }
 
 #Preview {
-    ResultScreen()
+    HistoryResultScreen()
         .environment(RouteModel())
         .environment(WebRTCModel())
         .environment(QNScaleModel())

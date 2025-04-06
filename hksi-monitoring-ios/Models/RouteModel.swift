@@ -36,4 +36,5 @@ enum Route {
     case scanning
     case result
     case questionnaire
+    case historyresult
 }

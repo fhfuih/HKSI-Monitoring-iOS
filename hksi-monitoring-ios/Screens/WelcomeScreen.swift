@@ -146,6 +146,7 @@ fileprivate struct StartButton: View {
                             logger.error("WebRTC pre-connection failed: \(error)")
                             errorMessage = "WebRTC connection failed"
                         }
+                        await startSession()
                     }
                 }
             }) {
@@ -173,7 +174,7 @@ fileprivate struct StartButton: View {
                         logger.debug("Participant ID type: \(type(of: participantID)) | Value: \(participantID)")
                         Task {
 //                            try await webRTCModel.connect()
-                            await startSession()
+//                            await startSession()
 //                            participantID = ""  // 确保 session 启动后再清空
                         }
                     }
@@ -220,8 +221,9 @@ fileprivate struct StartButton: View {
                     logger.debug("Already sent Participant ID to backend")
                     
                     cameraModel.shouldDetectFace = true
+                    routeModel.push(.historyresult)
 //                    routeModel.push(.questionnaire)
-                    routeModel.paths.append(.scanning)
+//                    routeModel.paths.append(.scanning)
                 } catch {
                     errorMessage = "Error starting a user session: \(error)"
                 }

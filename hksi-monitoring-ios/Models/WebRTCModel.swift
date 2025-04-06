@@ -15,6 +15,9 @@ class WebRTCModel {
     var iceConnectionState: RTCIceConnectionState?
     var connected = false
     
+    var person_id: String?
+    var participant_id: String?
+    
     /// The prediction results. nil = no value yet. non-nil object with nil fields = some models have indetermined values.
     var intermediateValue: FramePrediction?
     var finalValue: FramePrediction? {
@@ -126,16 +129,43 @@ class WebRTCModel {
         
         weightDataDict["Weight"] = weightData
         
-        // 执行数据发送
+//        guard let participantID = finalValue?.person_id else {
+//            logger.error("Participant ID is missing, can not record weight data to DB")
+//            return
+//        }
+        guard let participantID = finalValue?.participant_id else {
+            logger.error("Participant ID is missing, can not record weight data to DB")
+            return
+        }
+        let personID = finalValue?.person_id
+        
+        // 构造包含 participantID 和 surveyResult 的新字典
+        let payload: [String: Any] = [
+            "ParticipantID": participantID,
+            "PersonID": personID,
+            "weightDataDict": weightDataDict
+        ]
+        
         do {
-            let jsonData = try JSONEncoder().encode(weightDataDict)
+            let jsonData = try JSONSerialization.data(withJSONObject: payload, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 webRTCClient.sendMessge(message: jsonString)
                 logger.debug("Successfully sent weight Data: \(jsonString)")
             }
         } catch {
-            logger.error("Failed to submit weight data")
+            logger.error("Failed to submit weight data: \(error.localizedDescription)")
         }
+        
+//        // 执行数据发送
+//        do {
+//            let jsonData = try JSONEncoder().encode(payload)
+//            if let jsonString = String(data: jsonData, encoding: .utf8) {
+//                webRTCClient.sendMessge(message: jsonString)
+//                logger.debug("Successfully sent weight Data: \(jsonString)")
+//            }
+//        } catch {
+//            logger.error("Failed to submit weight data")
+//        }
     }
     
     func sendBodyData(weightData: Double?, bodyfatData: Double?) {
@@ -144,16 +174,43 @@ class WebRTCModel {
         bodyDataDict["Weight"] = weightData
         bodyDataDict["Body Fat"] = bodyfatData
         
-        // 执行数据发送
+//        guard let participantID = finalValue?.person_id else {
+//            logger.error("Participant ID is missing, can not record weight data to DB")
+//            return
+//        }
+        guard let participantID = finalValue?.participant_id else {
+            logger.error("Participant ID is missing, can not record weight data to DB")
+            return
+        }
+        let personID = finalValue?.person_id
+        
+        // 构造包含 participantID 和 surveyResult 的新字典
+        let payload: [String: Any] = [
+            "ParticipantID": participantID,
+            "PersonID": personID,
+            "bodyDataDict": bodyDataDict
+        ]
+        
         do {
-            let jsonData = try JSONEncoder().encode(bodyDataDict)
+            let jsonData = try JSONSerialization.data(withJSONObject: payload, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 webRTCClient.sendMessge(message: jsonString)
-                logger.debug("Successfully sent Body Data: \(jsonString)")
+                logger.debug("Successfully sent body Data: \(jsonString)")
             }
         } catch {
-            logger.error("Failed to submit body data")
+            logger.error("Failed to submit body data: \(error.localizedDescription)")
         }
+        
+//        // 执行数据发送
+//        do {
+//            let jsonData = try JSONEncoder().encode(bodyDataDict)
+//            if let jsonString = String(data: jsonData, encoding: .utf8) {
+//                webRTCClient.sendMessge(message: jsonString)
+//                logger.debug("Successfully sent Body Data: \(jsonString)")
+//            }
+//        } catch {
+//            logger.error("Failed to submit body data")
+//        }
     }
     
 //    func sendParticipantID(stringID: String) {
@@ -172,16 +229,43 @@ class WebRTCModel {
     }
     
     func sendSurveyData(surveyResult: [String: Int]) {
-        // 执行数据发送
+//        guard let participantID = finalValue?.person_id else {
+//            logger.error("Participant ID is missing, can not record data to DB")
+//            return
+//        }
+        guard let participantID = finalValue?.participant_id else {
+            logger.error("Participant ID is missing, can not record data to DB")
+            return
+        }
+        let personID = finalValue?.person_id
+        
+        // 构造包含 participantID 和 surveyResult 的新字典
+        let payload: [String: Any] = [
+            "ParticipantID": participantID,
+            "PersonID": personID,
+            "surveyResult": surveyResult
+        ]
+        
         do {
-            let jsonData = try JSONEncoder().encode(surveyResult)
+            let jsonData = try JSONSerialization.data(withJSONObject: payload, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 webRTCClient.sendMessge(message: jsonString)
                 logger.debug("Successfully sent Survey Data: \(jsonString)")
             }
         } catch {
-            logger.error("Failed to submit survey data")
+            logger.error("Failed to submit survey data: \(error.localizedDescription)")
         }
+        
+//        // 执行数据发送
+//        do {
+//            let jsonData = try JSONEncoder().encode(surveyResult)
+//            if let jsonString = String(data: jsonData, encoding: .utf8) {
+//                webRTCClient.sendMessge(message: jsonString)
+//                logger.debug("Successfully sent Survey Data: \(jsonString)")
+//            }
+//        } catch {
+//            logger.error("Failed to submit survey data")
+//        }
     }
     
 //    private func sendCandidate(iceCandidate: RTCIceCandidate){
