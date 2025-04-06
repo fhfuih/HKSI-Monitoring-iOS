@@ -221,9 +221,9 @@ fileprivate struct StartButton: View {
                     logger.debug("Already sent Participant ID to backend")
                     
                     cameraModel.shouldDetectFace = true
-                    routeModel.push(.historyresult)
+//                    routeModel.push(.historyresult)
 //                    routeModel.push(.questionnaire)
-//                    routeModel.paths.append(.scanning)
+                    routeModel.paths.append(.scanning)
                 } catch {
                     errorMessage = "Error starting a user session: \(error)"
                 }
