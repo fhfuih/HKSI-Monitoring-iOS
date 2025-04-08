@@ -7,9 +7,12 @@
 
 import SwiftUI
 
+//fileprivate let DURATION_DISCARD: Double = 2
+//fileprivate let DURATION_TOTAL: Double = 36
+//fileprivate let DURATION_SENDING: Double = 34
 fileprivate let DURATION_DISCARD: Double = 2
-fileprivate let DURATION_TOTAL: Double = 36
-fileprivate let DURATION_SENDING: Double = 34
+fileprivate let DURATION_TOTAL: Double = 8
+fileprivate let DURATION_SENDING: Double = 6
 
 //fileprivate let DURATION_DISCARD: Double = 2
 //fileprivate let DURATION_TOTAL: Double = 3
