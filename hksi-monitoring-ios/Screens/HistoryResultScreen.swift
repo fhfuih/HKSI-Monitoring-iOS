@@ -61,14 +61,15 @@ struct HistoryResultScreen: View {
     @ViewBuilder
     func HRChartView() -> some View {
         VStack {
-            let rawHRList: [Double?] = [72.0, 76.5, nil, 70.8, 76.0, nil, nil]
-
+            let rawHRList: [Double?] = [72.0, 76.5, nil, 70.8, 76.0, nil, nil, 72.0, 76.5, nil, 70.8, 76.0, nil, 70.8, 76.0]
+//            let rawHRList: [Double?] = [72.0, 76.5]
+            
             let data: [HRDataPoint] = {
                 var result: [HRDataPoint] = []
-                var lastValid: Double? = nil
+                var lastValid: Double? = 65.0
                 var lastRealIndex: Int? = nil
                 let count = rawHRList.count
-
+                
                 for (index, val) in rawHRList.enumerated() {
                     let label = String(index + 1)
                     if let v = val {
@@ -79,7 +80,7 @@ struct HistoryResultScreen: View {
                         result.append(HRDataPoint(index: index, label: label, value: fallback, isImputed: true, isLatestReal: false))
                     }
                 }
-
+                
                 if let realIndex = lastRealIndex, realIndex == count - 1 {
                     // 原始最后一个是有效值 → 标记该点为 isLatestReal
                     result = result.map { point in
@@ -99,14 +100,14 @@ struct HistoryResultScreen: View {
                         isLatestReal: true
                     )
                 }
-
+                
                 return result
             }()
-
+            
             if data.count >= 2 {
                 Text("HR (bpm)")
                     .font(.headline)
-
+                
                 Chart {
                     ForEach(data) { point in
                         BarMark(
@@ -114,7 +115,7 @@ struct HistoryResultScreen: View {
                             y: .value("HR", point.value)
                         )
                         .foregroundStyle(point.isImputed ? Color.gray.opacity(0.35) : Color.blue)
-
+                        
                         if point.isLatestReal && !point.isImputed {
                             PointMark(
                                 x: .value("Measurement", point.label),
@@ -123,7 +124,7 @@ struct HistoryResultScreen: View {
                             .symbolSize(100)
                             .foregroundStyle(Color.red)
                             .annotation(position: .top) {
-//                                Text("Latest: \(Int(point.value))")
+                                //                                Text("Latest: \(Int(point.value))")
                                 Text("Latest: \(point.value.formatted(.number.precision(.fractionLength(1))))")
                                     .font(.caption)
                                     .foregroundColor(.red)
@@ -148,23 +149,21 @@ struct HistoryResultScreen: View {
             } else if (data.count == 1) {
                 let hr = webRTCModel.finalValue?.hr
                 let hrv = webRTCModel.finalValue?.hrv
-            
+                
                 if let hr {
-                     Text("HR: ")
+                    Text("HR: ")
                         .font(.system(size: 28, weight: .semibold)) +
-                     Text(hr, format: .number)
+                    Text(hr, format: .number)
                         .font(.system(size: 40, weight: .bold))
                 }
-            
+                
                 if hr == nil {
                     Text("No data")
                 }
-                                            
+                
             }
-//            else {
-//                Text("No data")
-//            }
         }
+    }
 //        VStack {
 //            let rawHRList: [Double?] = [72.0, 76.5, nil, 70.8, 76.0, nil, 77.1]
 //
@@ -306,7 +305,7 @@ struct HistoryResultScreen: View {
 //                    Text("No data")
 //                }
 //        }
-    }
+//    }
     
     struct FatigueDataPoint: Identifiable {
         let id = UUID()
@@ -319,12 +318,14 @@ struct HistoryResultScreen: View {
     @ViewBuilder
     func FatigueChartView() -> some View {
         VStack {
-            let rawFatigueList: [Double?] = [0.5, 0.75, nil, 0.5, 0.75, nil, nil]
+            let rawFatigueList: [Double?] = [0.5, 0.75, nil, 0.5, 0.75, nil, nil, 0.5, 0.75, nil, 0.5, 0.75, nil, 0.5, 0.75]
+            //            let rawFatigueList: [Double?] = [0.5, 0.75]
+            //            let rawFatigueList: [Double?] = [0.5]
             
             // 提前处理数据，变成结构化数组
             let data: [FatigueDataPoint] = {
                 var result: [FatigueDataPoint] = []
-                var lastValid: Double? = nil
+                var lastValid: Double? = 0
                 let count = rawFatigueList.count
                 
                 for (index, val) in rawFatigueList.enumerated() {
@@ -429,7 +430,7 @@ struct HistoryResultScreen: View {
                 }
             }
         }
-            
+    }
 //            else {
 //                Text("Not enough data")
 //            }
@@ -657,63 +658,398 @@ struct HistoryResultScreen: View {
 //                }
 //            }
 //        }
-    }
+//    }
     
+    
+//    struct BodyDataPoint: Identifiable {
+//        let id = UUID()
+//        let index: Int
+//        let label: String
+//        let weight: Double
+//        let bodyfat: Double
+//        let isImputedWeight: Bool
+//        let isImputedBodyfat: Bool
+//        let isLast: Bool
+//    }
+//    struct HealthDataPoint {
+//        let index: Int
+//        let label: String
+//        let value: Double
+//        let isImputed: Bool
+//        let isLast: Bool
+//    }
+//    
+    struct CombinedHealthDataPoint: Identifiable {
+        let id = UUID()
+        let index: Int
+        let label: String
+        let weight: Double
+        let bodyfat: Double
+        let isImputedWeight: Bool
+        let isImputedBodyfat: Bool
+        let isLast: Bool
+    }
+
+    func generateCombinedHealthData(
+        rawWeightList: [Double?],
+        latestWeight: Double?,
+        rawBodyFatList: [Double?],
+        latestBodyFat: Double?,
+        defaultWeight: Double = 70.0,
+        defaultBodyFat: Double = 22.0
+    ) -> [CombinedHealthDataPoint] {
+        
+        // 内部通用处理函数
+        func process(rawList: [Double?], latestValue: Double?, defaultValue: Double) -> [(value: Double, isImputed: Bool)] {
+            var lastValid: Double? = defaultValue
+            let combined = rawList + [latestValue]
+            var result: [(Double, Bool)] = []
+            
+            for val in combined {
+                if let v = val {
+                    lastValid = v
+                    result.append((v, false))
+                } else if let fallback = lastValid {
+                    result.append((fallback, true))
+                }
+            }
+            return result
+        }
+        
+        let weightData = process(rawList: rawWeightList, latestValue: latestWeight, defaultValue: defaultWeight)
+        let bodyFatData = process(rawList: rawBodyFatList, latestValue: latestBodyFat, defaultValue: defaultBodyFat)
+        let count = max(weightData.count, bodyFatData.count)
+        
+        var combinedData: [CombinedHealthDataPoint] = []
+        
+        for i in 0..<count {
+            let weight = i < weightData.count ? weightData[i].value : defaultWeight
+            let isImputedWeight = i < weightData.count ? weightData[i].isImputed : true
+            
+            let bodyfat = i < bodyFatData.count ? bodyFatData[i].value : defaultBodyFat
+            let isImputedBodyfat = i < bodyFatData.count ? bodyFatData[i].isImputed : true
+            
+            combinedData.append(
+                CombinedHealthDataPoint(
+                    index: i,
+                    label: String(i + 1),
+                    weight: weight,
+                    bodyfat: bodyfat,
+                    isImputedWeight: isImputedWeight,
+                    isImputedBodyfat: isImputedBodyfat,
+                    isLast: i == count - 1
+                )
+            )
+        }
+        
+        return combinedData
+    }
     @ViewBuilder
     func BodyChartView() -> some View {
         VStack {
             let weight = qnScaleModel.finalValue?.weight
             let bodyFat = qnScaleModel.finalValue?.bodyFat
             
-//                                if weight == nil && bodyFat == nil {
-//                                    logger.debug("No bady data needs to send to backend")
-//                                } else{
-//                                    if bodyFat == nil{
-//                                        webRTCModelSend.sendWeightData(weightData: weight)
-//                                        logger.debug("No badyfat data needs to send to backend, only send weight data")
-//                                    }
-//                                    else{
-//                                        webRTCModelSend.sendBodyData(weightData: weight, bodyfatData: bodyFat)
-//                                        logger.debug("Send weight and bodyfat data to backend")
-//                                    }
-//                                }
-            
-//                                var bodyDataDict: [String: Double] = [:]
+            var rawWeightList: [Double?] = [75.56, nil, 78.11, 75.56, nil, 78.11, 75.56, nil, 78.11, 80.33, 81.00, 85.44, 86.33, 88.21]
+            var rawBodyfatList: [Double?] = [nil, nil, 23.3, 22.3, 26.2, nil, 21.6, 23.3, 22.3, 26.2, 21.6, 23.3, 22.3, 26.2]
 
-//                                // Update data dictionary outside ViewBuilder
-//                                updateBodyDataDict(weight: weight, bodyFat: bodyFat)
+            let data = generateCombinedHealthData(
+                rawWeightList: rawWeightList,
+                latestWeight: weight,
+                rawBodyFatList: rawBodyfatList,
+                latestBodyFat: bodyFat
+            )
             
-            if let weight {
-//                                    bodyDataDict["Weight"] = weight
-                Text("Weight: ")
-                    .font(.system(size: 28, weight: .semibold)) +
-                Text(weight, format: .number)
-                    .font(.system(size: 40, weight: .bold)) +
-                Text("kg")
-                    .font(.system(size: 28, weight: .semibold))
-            } else {
-                Text("Weight: ")
-                    .font(.system(size: 28, weight: .semibold)) +
-                Text("No data")
-                    .font(.system(size: 28))
+            if data.count >= 2 {
+                Text("Weight (kg) & Body Fat (%)")
+                    .font(.headline)
+                
+                Chart {
+                    ForEach(data) { point in
+                        // MARK: - Weight Line
+                        LineMark(
+                            x: .value("Measurement", point.label),
+                            y: .value("Weight (kg)", point.weight),
+                            series: .value("Metric", "Weight")
+                        )
+                        .foregroundStyle(point.isImputedWeight ? .gray : .blue)
+                        
+                        if point.isImputedWeight {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Weight (kg)", point.weight)
+//                                series: .value("Metric", "Weight")
+                            )
+                            .symbolSize(80)
+                            .foregroundStyle(.gray)
+                            
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Weight (kg)", point.weight)
+                            )
+                            .symbolSize(30)
+                            .foregroundStyle(.white)
+                        } else {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Weight (kg)", point.weight)
+                            )
+                            .symbolSize(60)
+                            .foregroundStyle(.blue)
+                        }
+                        
+                        if point.isLast && !point.isImputedWeight {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Weight (kg)", point.weight)
+                            )
+                            .symbolSize(220)
+                            .foregroundStyle(.red)
+                            .annotation(position: .top) {
+                                Text("Latest Weight: \(String(format: "%.1f", point.weight))")
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                            }
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Weight (kg)", point.weight)
+                            )
+                            .symbolSize(60)
+                            .foregroundStyle(.blue)
+                        } else if point.isLast {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Weight (kg)", point.weight)
+                            )
+                            .symbolSize(0)
+                            .foregroundStyle(Color.gray.opacity(0.4))
+                            .annotation(position: .top) {
+                                Text("No Latest Weight")
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    }
+                    
+                    ForEach(data) { point in
+                        // MARK: - Body Fat Line
+                        LineMark(
+                            x: .value("Measurement", point.label),
+                            y: .value("Body Fat (%)", point.bodyfat),
+                            series: .value("Metric", "Body Fat")
+                        )
+                        .foregroundStyle(point.isImputedBodyfat ? .gray : .brown) // 棕黄色（建议在 Assets 加一个颜色）
+                        
+                        if point.isImputedBodyfat {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Body Fat (%)", point.bodyfat)
+                            )
+                            .symbolSize(80)
+                            .foregroundStyle(.gray)
+                            
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Body Fat (%)", point.bodyfat)
+                            )
+                            .symbolSize(30)
+                            .foregroundStyle(.white)
+                        } else {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Body Fat (%)", point.bodyfat)
+                            )
+                            .symbolSize(60)
+                            .foregroundStyle(.brown)
+                        }
+                        
+                        if point.isLast && !point.isImputedBodyfat {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Body Fat (%)", point.bodyfat)
+                            )
+                            .symbolSize(220)
+                            .foregroundStyle(.red)
+                            .annotation(position: .top) {
+                                Text("Latest Body Fat: \(String(format: "%.1f", point.bodyfat))")
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                            }
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Body Fat (%)", point.bodyfat)
+                            )
+                            .symbolSize(60)
+                            .foregroundStyle(.brown)
+                        } else if point.isLast {
+                            PointMark(
+                                x: .value("Measurement", point.label),
+                                y: .value("Body Fat (%)", point.bodyfat)
+                            )
+                            .symbolSize(0)
+                            .foregroundStyle(Color.gray.opacity(0.4))
+                            .annotation(position: .top) {
+                                Text("No Latest Body Fat")
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    }
+                }
+                .frame(height: 250)
+                .padding(.top, 10)
+                .chartYScale(domain: 0...100)
             }
-            
-            if let bodyFat {
-//                                    bodyDataDict["Body Fat"] = bodyFat
-                Text("Body Fat: ")
-                    .font(.system(size: 28, weight: .semibold)) +
-//                                    Text(bodyFat, format: .percent)
-                Text(bodyFat, format: .number)
-                    .font(.system(size: 40, weight: .bold)) +
-                Text("%")
-                    .font(.system(size: 28, weight: .semibold))
-            } else {
-                Text("Body Fat: ")
-                    .font(.system(size: 28, weight: .semibold)) +
-                Text("No data")
-                    .font(.system(size: 28))
+
+
+//            let data: [BodyDataPoint] = {
+//                var result: [BodyDataPoint] = []
+//                var lastWeight: Double? = nil
+//                var lastBodyfat: Double? = nil
+//                let count = min(rawWeightList.count, rawBodyfatList.count)
+//                
+//                for index in 0..<count {
+//                    let label = String(index + 1)
+//                    let isLast = index == count - 1
+//                    
+//                    var weightVal: Double = 0
+//                    var bodyfatVal: Double = 0
+//                    var imputedWeight = false
+//                    var imputedBodyfat = false
+//                    
+//                    if let w = rawWeightList[index] {
+//                        weightVal = w
+//                        lastWeight = w
+//                    } else if let fallback = lastWeight {
+//                        weightVal = fallback
+//                        imputedWeight = true
+//                    }
+//                    
+//                    if let b = rawBodyfatList[index] {
+//                        bodyfatVal = b
+//                        lastBodyfat = b
+//                    } else if let fallback = lastBodyfat {
+//                        bodyfatVal = fallback
+//                        imputedBodyfat = true
+//                    }
+//                    
+//                    result.append(BodyDataPoint(
+//                        index: index,
+//                        label: label,
+//                        weight: weightVal,
+//                        bodyfat: bodyfatVal,
+//                        isImputedWeight: imputedWeight,
+//                        isImputedBodyfat: imputedBodyfat,
+//                        isLast: isLast
+//                    ))
+//                }
+//                return result
+//            }()
+//            if data.count >= 2 {
+//                Text("Body Fat")
+//                    .font(.headline)
+//
+//                Chart {
+//                    // 画 Weight 线
+//                    ForEach(data) { point in
+//                        LineMark(
+//                            x: .value("Measurement", point.label),
+//                            y: .value("Weight (kg)", point.weight)
+//                        )
+//                        .foregroundStyle(.blue)
+//                        .lineStyle(StrokeStyle(lineWidth: 2))
+//
+//                        PointMark(
+//                            x: .value("Measurement", point.label),
+//                            y: .value("Weight (kg)", point.weight)
+////                            series: .value("Metric", "Weight")
+//                        )
+//                        .symbolSize(50)
+//                        .foregroundStyle(point.isImputedWeight ? .gray : .blue)
+//
+//                        if point.isLast {
+//                            PointMark(
+//                                x: .value("Measurement", point.label),
+//                                y: .value("Weight (kg)", point.weight)
+//                            )
+//                            .symbolSize(200)
+//                            .foregroundStyle(.blue)
+//                            .annotation(position: .top) {
+//                                Text("Latest Weight: \(String(format: "%.1f", point.weight))kg")
+//                                    .font(.caption)
+//                                    .foregroundColor(.blue)
+//                            }
+//                        }
+//                    }
+//
+//                    // 画 Body Fat 线
+//                    ForEach(data) { point in
+//                        LineMark(
+//                            x: .value("Measurement", point.label),
+//                            y: .value("Body Fat (%)", point.bodyfat)
+//                        )
+//                        .foregroundStyle(.green)
+//                        .lineStyle(StrokeStyle(lineWidth: 2, dash: [5]))
+//
+//                        PointMark(
+//                            x: .value("Measurement", point.label),
+//                            y: .value("Body Fat (%)", point.bodyfat)
+//                        )
+//                        .symbolSize(50)
+//                        .foregroundStyle(point.isImputedBodyfat ? .gray : .green)
+//
+//                        if point.isLast {
+//                            PointMark(
+//                                x: .value("Measurement", point.label),
+//                                y: .value("Body Fat (%)", point.bodyfat)
+//                            )
+//                            .symbolSize(200)
+//                            .foregroundStyle(.green)
+//                            .annotation(position: .top) {
+//                                Text("Latest Body Fat: \(String(format: "%.1f", point.bodyfat))%")
+//                                    .font(.caption)
+//                                    .foregroundColor(.green)
+//                            }
+//                        }
+//                    }
+//                }
+//                .frame(height: 250)
+//                .padding(.top, 10)
+//                .chartYScale(domain: 0...100)
+//            }
+            else {
+//                Text("Not enough data")
+                if let weight {
+    //                                    bodyDataDict["Weight"] = weight
+                    Text("Weight: ")
+                        .font(.system(size: 28, weight: .semibold)) +
+                    Text(weight, format: .number)
+                        .font(.system(size: 40, weight: .bold)) +
+                    Text("kg")
+                        .font(.system(size: 28, weight: .semibold))
+                } else {
+                    Text("Weight: ")
+                        .font(.system(size: 28, weight: .semibold)) +
+                    Text("No data")
+                        .font(.system(size: 28))
+                }
+                
+                if let bodyFat {
+    //                                    bodyDataDict["Body Fat"] = bodyFat
+                    Text("Body Fat: ")
+                        .font(.system(size: 28, weight: .semibold)) +
+    //                                    Text(bodyFat, format: .percent)
+                    Text(bodyFat, format: .number)
+                        .font(.system(size: 40, weight: .bold)) +
+                    Text("%")
+                        .font(.system(size: 28, weight: .semibold))
+                } else {
+                    Text("Body Fat: ")
+                        .font(.system(size: 28, weight: .semibold)) +
+                    Text("No data")
+                        .font(.system(size: 28))
+                }
             }
-//                                webRTCModelSend.sendBodyData(bodyResult: bodyDataDict)
         }
         .onAppear{
             let weight = qnScaleModel.finalValue?.weight
@@ -734,6 +1070,83 @@ struct HistoryResultScreen: View {
             }
         }
     }
+
+    
+//    @ViewBuilder
+//    func BodyChartView() -> some View {
+//        VStack {
+//            let weight = qnScaleModel.finalValue?.weight
+//            let bodyFat = qnScaleModel.finalValue?.bodyFat
+//            
+////                                if weight == nil && bodyFat == nil {
+////                                    logger.debug("No bady data needs to send to backend")
+////                                } else{
+////                                    if bodyFat == nil{
+////                                        webRTCModelSend.sendWeightData(weightData: weight)
+////                                        logger.debug("No badyfat data needs to send to backend, only send weight data")
+////                                    }
+////                                    else{
+////                                        webRTCModelSend.sendBodyData(weightData: weight, bodyfatData: bodyFat)
+////                                        logger.debug("Send weight and bodyfat data to backend")
+////                                    }
+////                                }
+//            
+////                                var bodyDataDict: [String: Double] = [:]
+//
+////                                // Update data dictionary outside ViewBuilder
+////                                updateBodyDataDict(weight: weight, bodyFat: bodyFat)
+//            
+//            if let weight {
+////                                    bodyDataDict["Weight"] = weight
+//                Text("Weight: ")
+//                    .font(.system(size: 28, weight: .semibold)) +
+//                Text(weight, format: .number)
+//                    .font(.system(size: 40, weight: .bold)) +
+//                Text("kg")
+//                    .font(.system(size: 28, weight: .semibold))
+//            } else {
+//                Text("Weight: ")
+//                    .font(.system(size: 28, weight: .semibold)) +
+//                Text("No data")
+//                    .font(.system(size: 28))
+//            }
+//            
+//            if let bodyFat {
+////                                    bodyDataDict["Body Fat"] = bodyFat
+//                Text("Body Fat: ")
+//                    .font(.system(size: 28, weight: .semibold)) +
+////                                    Text(bodyFat, format: .percent)
+//                Text(bodyFat, format: .number)
+//                    .font(.system(size: 40, weight: .bold)) +
+//                Text("%")
+//                    .font(.system(size: 28, weight: .semibold))
+//            } else {
+//                Text("Body Fat: ")
+//                    .font(.system(size: 28, weight: .semibold)) +
+//                Text("No data")
+//                    .font(.system(size: 28))
+//            }
+////                                webRTCModelSend.sendBodyData(bodyResult: bodyDataDict)
+//        }
+//        .onAppear{
+//            let weight = qnScaleModel.finalValue?.weight
+//            let bodyFat = qnScaleModel.finalValue?.bodyFat
+//            
+//            if weight == nil && bodyFat == nil {
+//                logger.debug("No bady data needs to send to backend")
+//                webRTCModel.sendBodyData(weightData: 60.32, bodyfatData: 22.3)
+//            } else{
+//                if bodyFat == nil{
+//                    webRTCModel.sendWeightData(weightData: weight)
+//                    logger.debug("No badyfat data needs to send to backend, only send weight data")
+//                }
+//                else{
+//                    webRTCModel.sendBodyData(weightData: weight, bodyfatData: bodyFat)
+//                    logger.debug("Send weight and bodyfat data to backend")
+//                }
+//            }
+//        }
+//    }
     
     @ViewBuilder
     func SkinChartView() -> some View {
