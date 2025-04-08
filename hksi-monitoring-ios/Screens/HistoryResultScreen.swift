@@ -750,8 +750,12 @@ struct HistoryResultScreen: View {
             let weight = qnScaleModel.finalValue?.weight
             let bodyFat = qnScaleModel.finalValue?.bodyFat
             
-            var rawWeightList: [Double?] = [75.56, nil, 78.11, 75.56, nil, 78.11, 75.56, nil, 78.11, 80.33, 81.00, 85.44, 86.33, 88.21]
-            var rawBodyfatList: [Double?] = [nil, nil, 23.3, 22.3, 26.2, nil, 21.6, 23.3, 22.3, 26.2, 21.6, 23.3, 22.3, 26.2]
+//            let rawWeightList =
+            
+            let rawWeightList: [Double?] = [75.56, nil, 78.11, 75.56, nil, 78.11, 75.56, nil, 78.11, 80.33, 81.00, 85.44, 86.33, 88.21]
+            let rawBodyfatList: [Double?] = [nil, nil, 23.3, 22.3, 26.2, nil, 21.6, 23.3, 22.3, 26.2, 21.6, 23.3, 22.3, 26.2]
+//            let rawWeightList: [Double?] = []
+//            let rawBodyfatList: [Double?] = []
 
             let data = generateCombinedHealthData(
                 rawWeightList: rawWeightList,
@@ -1147,41 +1151,201 @@ struct HistoryResultScreen: View {
 //            }
 //        }
 //    }
-    
+    struct HealthDataPoint: Identifiable {
+        let id = UUID()
+        let index: Int
+        let label: String
+        let value: Int
+        let isImputed: Bool
+        let isLatestReal: Bool
+    }
+
     @ViewBuilder
     func SkinChartView() -> some View {
-        VStack {
-                 let darkCircleLeft = webRTCModel.finalValue?.darkCircleLeft
-                 let darkCircleRight = webRTCModel.finalValue?.darkCircleRight
-                 let pimpleCount = webRTCModel.finalValue?.pimpleCount
+        let rawCircleData = [1, 1, 0, 2, nil, nil, 1, 0, 1, nil, nil, 1, 0, 1, 1]
+        let rawPimpleData = [1, 1, 0, 2, nil, nil, 1, 0, 3, nil, nil, 2, 0, 1, 1]
+//        let rawCircleData = [1]
+//        let rawPimpleData = [2]
+        
+        if rawCircleData.count >= 2 {
+            VStack {
+                // Dark Circle 条形图
+                HealthChartSection(
+                    title: "Dark Circle Count",
+                    rawData: rawCircleData,
+    //                rawData: [1],
+    //                rawData: [nil, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    defaultValue: 0
+                )
+                Spacer().frame(height: 20)
+                // Pimple 条形图
+                HealthChartSection(
+                    title: "Pimple Count",
+                    rawData: rawPimpleData,
+    //                rawData: [1],
+                    defaultValue: 0
+                )
+            }
+    //        .frame(height: 220) // 🌟 确保整体大小一致
+        }
+        else {
+            VStack {
+                     let darkCircleLeft = webRTCModel.finalValue?.darkCircleLeft
+                     let darkCircleRight = webRTCModel.finalValue?.darkCircleRight
+                     let pimpleCount = webRTCModel.finalValue?.pimpleCount
 
-                 if let darkCircleLeft {
-                     Text("Dark circle (left): ")
-                         .font(.system(size: 28, weight: .semibold)) +
-                     Text(darkCircleLeft ? "Yes" : "No")
-                         .font(.system(size: 40, weight: .bold))
+                     if let darkCircleLeft {
+                         Text("Dark circle (left): ")
+                             .font(.system(size: 28, weight: .semibold)) +
+                         Text(darkCircleLeft ? "Yes" : "No")
+                             .font(.system(size: 40, weight: .bold))
+                     }
+                     
+                     if let darkCircleRight {
+                         Text("Dark circle (right): ")
+                             .font(.system(size: 28, weight: .semibold)) +
+                         Text(darkCircleRight ? "Yes" : "No")
+                             .font(.system(size: 40, weight: .bold))
+                     }
+                     Spacer().frame(height: 25)
+                     if let pimpleCount {
+                         Text("Pimple count: ")
+                             .font(.system(size: 28, weight: .semibold)) +
+                         Text(pimpleCount, format: .number)
+                             .font(.system(size: 40, weight: .bold))
+                     }
+                     
+                     if darkCircleLeft == nil && darkCircleRight == nil && pimpleCount == nil {
+                         Text("No data")
+                     }
                  }
-                 
-                 if let darkCircleRight {
-                     Text("Dark circle (right): ")
-                         .font(.system(size: 28, weight: .semibold)) +
-                     Text(darkCircleRight ? "Yes" : "No")
-                         .font(.system(size: 40, weight: .bold))
-                 }
-                 Spacer().frame(height: 25)
-                 if let pimpleCount {
-                     Text("Pimple count: ")
-                         .font(.system(size: 28, weight: .semibold)) +
-                     Text(pimpleCount, format: .number)
-                         .font(.system(size: 40, weight: .bold))
-                 }
-                 
-                 if darkCircleLeft == nil && darkCircleRight == nil && pimpleCount == nil {
-                     Text("No data")
-                 }
-             }
-            .padding(.top, -25)
+                .padding(.top, -25)
+        }
+        
+
     }
+    @ViewBuilder
+    func HealthChartSection(title: String, rawData: [Int?], defaultValue: Int) -> some View {
+        let data: [HealthDataPoint] = {
+            var result: [HealthDataPoint] = []
+            var lastValid: Int? = defaultValue
+            var lastRealIndex: Int? = nil
+            let count = rawData.count
+            
+            for (index, val) in rawData.enumerated() {
+                let label = String(index + 1)
+                if var v = val {
+//                    if v == 0{
+//                        v = 0.02
+//                    }
+                    lastValid = v
+                    lastRealIndex = index
+                    result.append(HealthDataPoint(index: index, label: label, value: v, isImputed: false, isLatestReal: false))
+                } else if let fallback = lastValid {
+                    result.append(HealthDataPoint(index: index, label: label, value: fallback, isImputed: true, isLatestReal: false))
+                }
+            }
+            
+            if let realIndex = lastRealIndex, realIndex == count - 1 {
+                result = result.map { point in
+                    if point.index == realIndex {
+                        return HealthDataPoint(index: point.index, label: point.label, value: point.value, isImputed: point.isImputed, isLatestReal: true)
+                    } else {
+                        return point
+                    }
+                }
+            } else if let lastIndex = result.indices.last {
+                result[lastIndex] = HealthDataPoint(
+                    index: result[lastIndex].index,
+                    label: result[lastIndex].label,
+                    value: result[lastIndex].value,
+                    isImputed: result[lastIndex].isImputed,
+                    isLatestReal: true
+                )
+            }
+            
+            return result
+        }()
+        
+        if data.count >= 2 {
+            Text(title)
+                .font(.headline)
+            
+            Chart {
+                ForEach(data) { point in
+                    BarMark(
+                        x: .value("Measurement", point.label),
+                        y: .value(title, point.value)
+                    )
+                    .foregroundStyle(point.isImputed ? Color.gray.opacity(0.35) : Color.blue)
+                    
+                    if point.isLatestReal && !point.isImputed {
+                        PointMark(
+                            x: .value("Measurement", point.label),
+                            y: .value(title, point.value)
+                        )
+                        .symbolSize(100)
+                        .foregroundStyle(Color.red)
+                        .annotation(position: .top) {
+                            Text("Latest: \(point.value.formatted(.number.precision(.fractionLength(0))))")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
+                    } else if point.isLatestReal && point.isImputed {
+                        PointMark(
+                            x: .value("Measurement", point.label),
+                            y: .value(title, point.value)
+                        )
+                        .symbolSize(0)
+                        .foregroundStyle(Color.gray.opacity(0.4))
+                        .annotation(position: .top) {
+                            Text("No Latest Data")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+            }
+            .frame(height: 100)
+//            .padding(.top, -25)
+        }
+    }
+
+    
+//    @ViewBuilder
+//    func SkinChartViewOld() -> some View {
+//        VStack {
+//                 let darkCircleLeft = webRTCModel.finalValue?.darkCircleLeft
+//                 let darkCircleRight = webRTCModel.finalValue?.darkCircleRight
+//                 let pimpleCount = webRTCModel.finalValue?.pimpleCount
+//
+//                 if let darkCircleLeft {
+//                     Text("Dark circle (left): ")
+//                         .font(.system(size: 28, weight: .semibold)) +
+//                     Text(darkCircleLeft ? "Yes" : "No")
+//                         .font(.system(size: 40, weight: .bold))
+//                 }
+//                 
+//                 if let darkCircleRight {
+//                     Text("Dark circle (right): ")
+//                         .font(.system(size: 28, weight: .semibold)) +
+//                     Text(darkCircleRight ? "Yes" : "No")
+//                         .font(.system(size: 40, weight: .bold))
+//                 }
+//                 Spacer().frame(height: 25)
+//                 if let pimpleCount {
+//                     Text("Pimple count: ")
+//                         .font(.system(size: 28, weight: .semibold)) +
+//                     Text(pimpleCount, format: .number)
+//                         .font(.system(size: 40, weight: .bold))
+//                 }
+//                 
+//                 if darkCircleLeft == nil && darkCircleRight == nil && pimpleCount == nil {
+//                     Text("No data")
+//                 }
+//             }
+//            .padding(.top, -25)
+//    }
 
     private func finish() {
         webRTCModel.intermediateValue = nil
