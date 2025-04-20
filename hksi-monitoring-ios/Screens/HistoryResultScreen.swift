@@ -61,8 +61,9 @@ struct HistoryResultScreen: View {
     @ViewBuilder
     func HRChartView() -> some View {
         VStack {
-            let rawHRList: [Double?] = [72.0, 76.5, nil, 70.8, 76.0, nil, nil, 72.0, 76.5, nil, 70.8, 76.0, nil, 70.8, 76.0]
+//            let rawHRList: [Double?] = [72.0, 76.5, nil, 70.8, 76.0, nil, nil, 72.0, 76.5, nil, 70.8, 76.0, nil, 70.8, 76.0]
 //            let rawHRList: [Double?] = [72.0, 76.5]
+            let rawHRList = webRTCModel.finalValue?.historical_data?.hrList ?? []
             
             let data: [HRDataPoint] = {
                 var result: [HRDataPoint] = []
@@ -318,9 +319,10 @@ struct HistoryResultScreen: View {
     @ViewBuilder
     func FatigueChartView() -> some View {
         VStack {
-            let rawFatigueList: [Double?] = [0.5, 0.75, nil, 0.5, 0.75, nil, nil, 0.5, 0.75, nil, 0.5, 0.75, nil, 0.5, 0.75]
+//            let rawFatigueList: [Double?] = [0.5, 0.75, nil, 0.5, 0.75, nil, nil, 0.5, 0.75, nil, 0.5, 0.75, nil, 0.5, 0.75]
             //            let rawFatigueList: [Double?] = [0.5, 0.75]
             //            let rawFatigueList: [Double?] = [0.5]
+            let rawFatigueList = webRTCModel.finalValue?.historical_data?.fatigueList ?? []
             
             // 提前处理数据，变成结构化数组
             let data: [FatigueDataPoint] = {
@@ -702,13 +704,21 @@ struct HistoryResultScreen: View {
         // 内部通用处理函数
         func process(rawList: [Double?], latestValue: Double?, defaultValue: Double) -> [(value: Double, isImputed: Bool)] {
             var lastValid: Double? = defaultValue
-            let combined = rawList + [latestValue]
+//            let combined = rawList + [latestValue]
+            let combined = Array(rawList.dropLast()) + [latestValue]
             var result: [(Double, Bool)] = []
             
             for val in combined {
                 if let v = val {
-                    lastValid = v
-                    result.append((v, false))
+                    if v > 0 {
+                        lastValid = v
+                        result.append((v, false))
+                    }
+                    else {
+                        if let fallback = lastValid {
+                            result.append((fallback, true))
+                        }
+                    }
                 } else if let fallback = lastValid {
                     result.append((fallback, true))
                 }
@@ -752,10 +762,12 @@ struct HistoryResultScreen: View {
             
 //            let rawWeightList =
             
-            let rawWeightList: [Double?] = [75.56, nil, 78.11, 75.56, nil, 78.11, 75.56, nil, 78.11, 80.33, 81.00, 85.44, 86.33, 88.21]
-            let rawBodyfatList: [Double?] = [nil, nil, 23.3, 22.3, 26.2, nil, 21.6, 23.3, 22.3, 26.2, 21.6, 23.3, 22.3, 26.2]
+//            let rawWeightList: [Double?] = [75.56, nil, 78.11, 75.56, nil, 78.11, 75.56, nil, 78.11, 80.33, 81.00, 85.44, 86.33, 90.9, nil]
+//            let rawBodyfatList: [Double?] = [nil, 0, 23.3, 22.3, 26.2, 0, 21.6, 23.3, 22.3, 26.2, 21.6, 23.3, 22.3, 20.1, nil]
 //            let rawWeightList: [Double?] = []
 //            let rawBodyfatList: [Double?] = []
+            let rawWeightList = webRTCModel.finalValue?.historical_data?.weightList ?? []
+            let rawBodyfatList = webRTCModel.finalValue?.historical_data?.bodyFatList ?? []
 
             let data = generateCombinedHealthData(
                 rawWeightList: rawWeightList,
@@ -1162,10 +1174,12 @@ struct HistoryResultScreen: View {
 
     @ViewBuilder
     func SkinChartView() -> some View {
-        let rawCircleData = [1, 1, 0, 2, nil, nil, 1, 0, 1, nil, nil, 1, 0, 1, 1]
-        let rawPimpleData = [1, 1, 0, 2, nil, nil, 1, 0, 3, nil, nil, 2, 0, 1, 1]
+//        let rawCircleData = [1, 1, 0, 2, nil, nil, 1, 0, 1, nil, nil, 1, 0, 1, 1]
+//        let rawPimpleData = [1, 1, 0, 2, nil, nil, 1, 0, 3, nil, nil, 2, 0, 1, 1]
 //        let rawCircleData = [1]
 //        let rawPimpleData = [2]
+        let rawCircleData = webRTCModel.finalValue?.historical_data?.darkCircleList ?? []
+        let rawPimpleData = webRTCModel.finalValue?.historical_data?.pimpleCountList ?? []
         
         if rawCircleData.count >= 2 {
             VStack {

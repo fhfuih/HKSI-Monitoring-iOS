@@ -152,7 +152,12 @@ struct QuestionnaireScreen: View {
 //                routeModel.pop()
 //            }
             
+            // 4.20 revise
             Button("Submit") {
+                
+                // 关闭键盘（关键步骤）
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+
   
                 // 检查是否所有问题都已回答
                 let allAnswered = questions.allSatisfy { question in
@@ -168,11 +173,18 @@ struct QuestionnaireScreen: View {
                 submitQuestions()
                 logger.debug("Submitted answers of questionnaire")
                 
-                webRTCModel.disconnect()
-                webRTCModel.finalValue = nil
+                webRTCModel.disconnect()  //先不断开
+//                webRTCModel.finalValue = nil
 //                qnScaleModel.finalValue = nil
                 
-                routeModel.pop()
+//                routeModel.pop()
+                routeModel.pushReplaceTop(.welcome)
+                
+                
+                // 跳转到欢迎页（避免 push 时键盘还在 → 崩溃）
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    routeModel.pushReplaceTop(.welcome)
+                }
                 
             }
             .alert("Attention", isPresented: $showAlert) {
@@ -183,6 +195,39 @@ struct QuestionnaireScreen: View {
             
             .buttonStyle(NavyRoundedButtonStyle())
             .padding()
+//            Button("Submit") {
+//                // 关闭键盘（关键步骤）
+//                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+//
+//                // 检查是否所有问题都已回答
+//                let allAnswered = questions.allSatisfy { question in
+//                    selectedAnswers[question.0] != nil
+//                }
+//
+//                guard allAnswered else {
+//                    alertMessage = "Please answer all questions on the questionnaire before submitting."
+//                    showAlert = true
+//                    return
+//                }
+//
+//                submitQuestions()
+//                logger.debug("Submitted answers of questionnaire")
+//
+//                // 🔁 延迟统一处理断开连接 & 跳转
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    webRTCModel.disconnect()
+//                    webRTCModel.finalValue = nil
+//                    routeModel.pushReplaceTop(.welcome)
+//                }
+//            }
+//            .alert("Attention", isPresented: $showAlert) {
+//                Button("Close", role: .cancel) { }
+//            } message: {
+//                Text(alertMessage)
+//            }
+//            .buttonStyle(NavyRoundedButtonStyle())
+//            .padding()
+
         }
         .navigationTitle("Questionnaire")
         .navigationBarBackButtonHidden(true)
