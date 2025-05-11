@@ -12,7 +12,7 @@ import WebRTC
 
 @Observable
 class WebRTCModel {
-    var iceConnectionState: RTCIceConnectionState?
+    var connectionState: RTCPeerConnectionState?
     var connected = false
     
     var person_id: String?
@@ -290,8 +290,8 @@ extension WebRTCModel: WebRTCClientDelegate {
 //        self.sendCandidate(iceCandidate: iceCandidate)
     }
     
-    func didIceConnectionStateChanged(iceConnectionState: RTCIceConnectionState) {
-        self.iceConnectionState = iceConnectionState
+    func didChangeConnectionState(connectionState: RTCPeerConnectionState) {
+        self.connectionState = connectionState
     }
     
     func didConnectWebRTC() {
@@ -334,23 +334,6 @@ extension WebRTCModel: WebRTCClientDelegate {
                 data.updateNilWith(other: intermediateValue!)
             }
             intermediateValue = data
-        }
-    }
-}
-
-extension RTCIceConnectionState {
-    /// https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceConnectionState
-    public var description: String {
-        return switch self {
-        case .new: "new..."
-        case .checking: "checking..."
-        case .connected: "connected"
-        case .completed: "completed"
-        case .failed: "failed"
-        case .disconnected: "disconnected"
-        case .closed: "closed"
-        case .count: "count..."
-        @unknown default: "???"
         }
     }
 }

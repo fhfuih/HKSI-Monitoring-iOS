@@ -8,7 +8,7 @@ fileprivate let webRTCOfferConstraints = [
 
 protocol WebRTCClientDelegate {
     func didGenerateCandidate(iceCandidate: RTCIceCandidate)
-    func didIceConnectionStateChanged(iceConnectionState: RTCIceConnectionState)
+    func didChangeConnectionState(connectionState: RTCPeerConnectionState)
     func didOpenDataChannel()
     func didReceiveData(data: Data)
     func didReceiveMessage(message: String)
@@ -30,6 +30,9 @@ class WebRTCClient: NSObject {
     private var useAudio: Bool = false
     private var useCustomFrameCapturer: Bool = true
     private var cameraDevicePosition: AVCaptureDevice.Position = .front
+    
+    /// Used to block the `connect` function until the WebRTC library reports a "connected" state
+    private var connectionContinuation: UnsafeContinuation<Void, Error>?
     
     var delegate: WebRTCClientDelegate?
     public private(set) var isConnected: Bool = false
@@ -83,6 +86,22 @@ class WebRTCClient: NSObject {
         
         /// Send the offer SDP to the signaling server
         try await sendSDP(offerSDP)
+        
+        /// Wait until WebRTC is really connected
+        try await withUnsafeThrowingContinuation { continuation in
+            /// Store this continuation, so that other functions will resume or throw it.
+            self.connectionContinuation = continuation
+
+            /// But also set a timeout. Don't wait forever
+            Task {
+                try await Task.sleep(for: .seconds(10))
+                if !isConnected && connectionContinuation != nil {
+                    connectionContinuation?.resume(throwing: WebRTCError.connectionTimeout)
+                    connectionContinuation = nil
+                    isConnected = false
+                }
+            }
+        }
     }
     
     func disconnect(){
@@ -103,7 +122,7 @@ class WebRTCClient: NSObject {
             logger.warning("no data channel")
         }
     }
-    
+
     func stopSendingVideoTrack() {
         if let cameraCapturer = self.videoCapturer as? RTCCameraVideoCapturer {
             cameraCapturer.stopCapture {
@@ -366,27 +385,6 @@ class WebRTCClient: NSObject {
             logger.warning("Receive unknown signaling message of type `\(incomingMessage.type)`.")
         }
     }
-    
-    // MARK: - Connection Events + Delegates
-    private func onConnected(){
-        self.isConnected = true
-        
-        DispatchQueue.main.async {
-            self.delegate?.didConnectWebRTC()
-        }
-    }
-    
-    private func onDisConnected(){
-        self.isConnected = false
-        
-        DispatchQueue.main.async {
-            logger.debug("--- Disconnected ---")
-            self.peerConnection!.close()
-            self.peerConnection = nil
-            self.dataChannel = nil
-            self.delegate?.didDisconnectWebRTC()
-        }
-    }
 }
 
 // MARK: - PeerConnection Delegeates
@@ -414,41 +412,77 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
     
     /// When PeerConnectionState changed
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCPeerConnectionState) {
-        logger.debug("connectionState -> \(newState.rawValue)")
+        logger.debug("connectionState -> \(newState.description)")
+        
+        switch newState {
+        case .connected:
+            if !self.isConnected {
+                self.isConnected = true
+                /// Unblock the `async connect()` function
+                if let continuation = self.connectionContinuation {
+                    continuation.resume()
+                }
+                /// Execute external event handler
+                DispatchQueue.main.async {
+                    self.delegate?.didConnectWebRTC()
+                }
+            }
+        case .disconnected:
+            if self.isConnected {
+                self.isConnected = false
+                /// Cleanup
+                self.peerConnection!.close()
+                self.peerConnection = nil
+                self.dataChannel = nil
+                /// Execute external event handler
+                DispatchQueue.main.async {
+                    self.delegate?.didDisconnectWebRTC()
+                }
+            }
+        case .failed:
+            if self.isConnected {
+                self.isConnected = false
+                /// Cleanup
+                self.peerConnection!.close()
+                self.peerConnection = nil
+                self.dataChannel = nil
+                /// Execute external event handler
+                DispatchQueue.main.async {
+                    self.delegate?.didDisconnectWebRTC()
+                }
+            }
+            /// Unblock the `async connect()` function
+            if let continuation = self.connectionContinuation {
+                continuation.resume(throwing: WebRTCError.connectionError)
+            }
+        default:
+            break
+        }
+        
+        /// Execute the external event handler (exposed via delegate) asynchronously
+        DispatchQueue.main.async {
+            self.delegate?.didChangeConnectionState(connectionState: newState)
+        }
     }
     
     /// When signaling state change
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
-        logger.debug("signalingState -> \(stateChanged.rawValue)")
+        logger.debug("signalingState -> \(stateChanged.description)")
     }
     
     /// When ICE connection state changes
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        logger.debug("iceConnectionState -> \(newState.rawValue)")
-        switch newState {
-        case .connected, .completed:
-            if !self.isConnected {
-                self.onConnected()
-            }
-        default:
-            if self.isConnected{
-                self.onDisConnected()
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.delegate?.didIceConnectionStateChanged(iceConnectionState: newState)
-        }
+        logger.debug("iceConnectionState -> \(newState.description)")
     }
 
     /// When ICE gathering state changes
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
-        logger.debug("iceGatheringState -> \(newState.rawValue)")
+        logger.debug("iceGatheringState -> \(newState.description)")
     }
     
-    /// When new ICE candidate is found
+    /// When new local ICE candidate is generated
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        logger.debug("ICE candidate found: \(candidate.serverUrl ?? "nil URL")")
+        logger.debug("ICE candidate found: \(candidate.sdp)")
         self.delegate?.didGenerateCandidate(iceCandidate: candidate)
     }
     
@@ -483,13 +517,80 @@ extension WebRTCClient: RTCDataChannelDelegate {
     }
     
     func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
-        let stateString = switch dataChannel.readyState {
-            case .closed: "closed"
-            case .closing: "closing"
-            case .connecting: "connecting"
-            case .open: "open"
-            @unknown default: String(dataChannel.readyState.rawValue)
+        logger.debug("DataChannel state -> \(dataChannel.readyState.description)")
+    }
+}
+
+// MARK: Helper extensions to log the states verbally
+extension RTCIceConnectionState {
+    // https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceConnectionState
+    public var description: String {
+        return switch self {
+        case .new: "NEW"
+        case .checking: "CHECKING"
+        case .connected: "CONNECTED"
+        case .completed: "COMPLETED"
+        case .failed: "FAILED"
+        case .disconnected: "DISCONNECTED"
+        case .closed: "CLOSED"
+        case .count: "COUNT"
+        @unknown default: "UNKNOWN(\(self.rawValue))"
         }
-        logger.debug("DataChannel state -> \(stateString)")
+    }
+}
+
+extension RTCPeerConnectionState {
+    // https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/connectionState
+    public var description: String {
+        return switch self {
+        case .new: "NEW"
+        case .connecting: "CONNECTING"
+        case .connected: "CONNECTED"
+        case .failed: "FAILED"
+        case .disconnected: "DISCONNECTED"
+        case .closed: "CLOSED"
+        @unknown default: "UNKNOWN(\(self.rawValue))"
+        }
+    }
+}
+
+extension RTCIceGatheringState {
+    // https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceGatheringState
+    public var description: String {
+        return switch self {
+        case .new: "NEW"
+        case .gathering: "GATHERING"
+        case .complete: "COMPLETE"
+        @unknown default: "UNKNOWN(\(self.rawValue))"
+        }
+    }
+}
+
+extension RTCSignalingState {
+    // https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/signalingState
+    public var description: String {
+        return switch self {
+        case .stable: "STABLE"
+        case .haveLocalOffer: "HAVE_LOCAL_OFFER"
+        case .haveLocalPrAnswer: "HAVE_LOCAL_PR_ANSWER"
+        case .haveRemoteOffer: "HAVE_REMOTE_OFFER"
+        case .haveRemotePrAnswer: "HAVE_REMOTE_PRE_ANSWER"
+        case .closed: "UNKNOWN(\(self.rawValue))" /// According to the source code, this is not an actual state
+        @unknown default: "UNKNOWN(\(self.rawValue))"
+        }
+    }
+}
+
+extension RTCDataChannelState {
+    // https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/readyState
+    public var description: String {
+        return switch self {
+        case .connecting: "CONNECTING"
+        case .open: "OPEN"
+        case .open: "OPEN"
+        case .closing: "CLOSING"
+        case .closed: "CLOSED"
+        @unknown default: "UNKNOWN(\(self.rawValue))"
+        }
     }
 }

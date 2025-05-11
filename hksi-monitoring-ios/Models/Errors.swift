@@ -25,4 +25,6 @@ enum WebRTCError: Error {
     case setLocalAnswerSDP
     case setRemoteOffserSDP
     case setRemoteAnswerSDP
+    case connectionTimeout
+    case connectionError
 }

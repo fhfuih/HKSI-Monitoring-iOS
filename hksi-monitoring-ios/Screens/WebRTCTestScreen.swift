@@ -12,7 +12,7 @@ struct WebRTCTestScreen: View {
     
     var body: some View {
         VStack {
-            Text(webRTCModel.iceConnectionState?.description ?? "Init")
+            Text(webRTCModel.connectionState?.description ?? "Init")
             Text(webRTCModel.connected ? "Connected" : "Not connected")
             Button("Start") {
                 Task {
