@@ -58,20 +58,20 @@ class WebRTCModel {
     @ObservationIgnored
     private var webRTCClient: WebRTCClient!
     
-    init(videoTrack: Bool = true, audioTrack: Bool = false, dataChannel: Bool = true, useCustomCapturer customCapturer: Bool = true) {
+    init(audioTrack: Bool = false) {
         
         /// Initialize capturing device
 #if targetEnvironment(simulator)
         // simulator does not have camera
         self.useCustomCapturer = false
 #else
-        self.useCustomCapturer = customCapturer
+        self.useCustomCapturer = true
 #endif
 
         /// Initializing WebRTC connection
         webRTCClient = WebRTCClient()
         webRTCClient.delegate = self
-        webRTCClient.setup(videoTrack: videoTrack, audioTrack: audioTrack, dataChannel: dataChannel, customFrameCapturer: self.useCustomCapturer)
+        webRTCClient.setup(audioTrack: audioTrack)
         
         if self.useCustomCapturer {
             logger.debug("--- use custom capturer ---")
