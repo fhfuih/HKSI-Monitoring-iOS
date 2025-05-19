@@ -53,98 +53,255 @@ struct QuestionnaireScreen: View {
     var body: some View {
         VStack(spacing: 20) {
             Text("Daily Readiness To Train Questionnaire")
-                .font(.system(size: 24, weight: .bold))
-                .padding(.bottom, 10)
+                .font(.system(size: 22, weight: .bold))
+                .padding(.bottom, 5)
             
             ScrollView {
                 ForEach(0..<questions.count, id: \.self) { index in
                     VStack(alignment: .leading, spacing: 8) {
                         Text(questions[index].0)
-                            .font(.system(size: 22, weight: .semibold))
+                            .font(.system(size: 20, weight: .semibold))
                             .foregroundStyle(.navy)
+
                         Text(questions[index].1)
-                            .font(.system(size: 18))
+                            .font(.system(size: 20))
                         
-                       Spacer().frame(height: 1)
-//                       Spacer().frame(height: 2)
-                        
-                        HStack {
+                        HStack(alignment: .center, spacing: 12) {
+                            // 左描述 - 固定宽度
                             Text(questions[index].2)
-//                                .font(.caption)
                                 .font(.system(size: 18))
-                                .foregroundStyle(.gray)
-//                            Spacer()
-//                            HStack(spacing: 15) {
-//                                ForEach(1...5, id: \.self) { value in
-//                                    RadioButton(
-//                                        label: "\(value)",
-//                                        isSelected: selectedAnswers[questions[index].0] == value
-//                                    ) {
-//                                        selectedAnswers[questions[index].0] = value
-//                                    }
-//                                }
-//                            }
-                            Spacer()
-                            Text(questions[index].3)
-//                                .font(.caption)
-                                .font(.system(size: 18))
-                                .foregroundStyle(.gray)
-                        }
-                        
-                        
-                        .overlay(
-                            
-                            // 扁平的长方形按钮
-                            
-                            HStack(spacing: 10) {
-//                                Spacer().frame(height: 2)
-                                
+                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+                                .frame(width: 300, alignment: .trailing) // ✅ 固定宽度靠右对齐
+                                .padding(.trailing, 6)
+
+                            // 按钮组
+                            HStack(spacing: 12) {
                                 ForEach(1...5, id: \.self) { value in
-                                    
                                     Button(action: {
                                         selectedAnswers[questions[index].0] = value
                                     }) {
                                         Text("\(value)")
                                             .font(.system(size: 18, weight: .bold))
-                                            .frame(width: 110, height: 30) // 调整按钮大小
-                                            .background(selectedAnswers[questions[index].0] == value ?
-                                                Color(red: 0.4, green: 0.5, blue: 0.7) : // 选中状态的蓝灰色
-                                                Color(red: 0.7, green: 0.75, blue: 0.85) // 未选中状态的浅蓝灰色
+                                            .frame(width: 100, height: 30)
+                                            .background(
+                                                selectedAnswers[questions[index].0] == value ?
+                                                Color(red: 0.4, green: 0.5, blue: 0.7) :
+                                                Color(red: 0.7, green: 0.75, blue: 0.85)
                                             )
-//                                            .background(selectedAnswers[questions[index].0] == value ? Color.blue.opacity(0.9) : Color.blue.opacity(0.3)) // 选中和未选中的颜色
                                             .foregroundColor(.white)
-                                            .cornerRadius(8) // 设置圆角
+                                            .cornerRadius(8)
                                     }
-                                    Spacer().frame(width: 25)
-                                    
-
                                 }
                             }
-                            .padding(.bottom, 10) // 让按钮组下方有空隙
-                    
-                            
-                            
-//                            HStack(spacing: 30) {
+
+                            // 右描述 - 固定宽度
+                            Text(questions[index].3)
+                                .font(.system(size: 18))
+                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+                                .frame(width: 300, alignment: .leading) // ✅ 固定宽度靠左对齐
+                                .padding(.leading, 6)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center) // ✅ 整行居中
+
+                        
+//                        HStack(alignment: .center, spacing: 12) {
+//                            // 左描述
+//                            Text(questions[index].2)
+//                                .font(.system(size: 18))
+//                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+//                                .padding(.trailing, 6)
+//
+//                            // 按钮组
+//                            HStack(spacing: 12) {
 //                                ForEach(1...5, id: \.self) { value in
-//                                    RadioButton(
-//                                        label: "\(value)",
-//                                        isSelected: selectedAnswers[questions[index].0] == value
-//                                    ) {
+//                                    Button(action: {
 //                                        selectedAnswers[questions[index].0] = value
+//                                    }) {
+//                                        Text("\(value)")
+//                                            .font(.system(size: 18, weight: .bold))
+//                                            .frame(width: 100, height: 30)
+//                                            .background(
+//                                                selectedAnswers[questions[index].0] == value ?
+//                                                Color(red: 0.4, green: 0.5, blue: 0.7) :
+//                                                Color(red: 0.7, green: 0.75, blue: 0.85)
+//                                            )
+//                                            .foregroundColor(.white)
+//                                            .cornerRadius(8)
 //                                    }
 //                                }
 //                            }
-//                            .padding(.bottom, 25) // 添加底部间距
-                        )
-                        
+//
+//                            // 右描述
+//                            Text(questions[index].3)
+//                                .font(.system(size: 18))
+//                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+//                                .padding(.leading, 6)
+//                        }
+//                        .frame(maxWidth: .infinity, alignment: .center)  // ✅ 让这个整体居中
+
+
+//                        HStack(alignment: .center, spacing: 12) {
+//                            Text(questions[index].2)
+//                                .font(.system(size: 16))
+//                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+//                                .padding(.trailing, 6)
+//
+//                            Spacer()
+//
+//                            HStack(spacing: 12) {
+//                                ForEach(1...5, id: \.self) { value in
+//                                    Button(action: {
+//                                        selectedAnswers[questions[index].0] = value
+//                                    }) {
+//                                        Text("\(value)")
+//                                            .font(.system(size: 18, weight: .bold))
+//                                            .frame(width: 100, height: 30)
+//                                            .background(
+//                                                selectedAnswers[questions[index].0] == value ?
+//                                                Color(red: 0.4, green: 0.5, blue: 0.7) :
+//                                                Color(red: 0.7, green: 0.75, blue: 0.85)
+//                                            )
+//                                            .foregroundColor(.white)
+//                                            .cornerRadius(8)
+//                                    }
+//                                }
+//                            }
+//
+//                            Spacer()
+//
+//                            Text(questions[index].3)
+//                                .font(.system(size: 16))
+//                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+//                                .padding(.leading, 6)
+//                        }
+//                        .padding(.vertical, 2)
                     }
                     .padding()
+                    .frame(maxWidth: 1300, alignment: .leading)         // ✅ 卡片统一宽度 + 内容靠左
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
-                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .center)    // ✅ 居中显示卡片
                     .padding(.bottom, 10)
+
+//                    VStack(alignment: .leading, spacing: 8) {
+//                        Text(questions[index].0)
+//                            .font(.system(size: 20, weight: .semibold))
+//                            .foregroundStyle(.navy)
+//                        Text(questions[index].1)
+//                            .font(.system(size: 18))
+//                        
+////                       Spacer().frame(height: 1)
+////                       Spacer().frame(height: 2)
+//                   
+//                        
+//                        HStack(alignment: .center, spacing: 12) {
+//                            
+//                            // 左侧描述 - 向按钮靠拢
+//                            Text(questions[index].2)
+//                                .font(.system(size: 16))
+//                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+//                                .padding(.trailing, 6)
+//                            
+//                            // 按钮组 - 居中显示
+//                            HStack(spacing: 12) {
+//                                ForEach(1...5, id: \.self) { value in
+//                                    Button(action: {
+//                                        selectedAnswers[questions[index].0] = value
+//                                    }) {
+//                                        Text("\(value)")
+//                                            .font(.system(size: 18, weight: .bold))
+//                                            .frame(width: 100, height: 30)
+//                                            .background(
+//                                                selectedAnswers[questions[index].0] == value ?
+//                                                Color(red: 0.4, green: 0.5, blue: 0.7) :
+//                                                Color(red: 0.7, green: 0.75, blue: 0.85)
+//                                            )
+//                                            .foregroundColor(.white)
+//                                            .cornerRadius(8)
+//                                    }
+//                                }
+//                            }
+//                            
+//                            // 右侧描述 - 向按钮靠拢
+//                            Text(questions[index].3)
+//                                .font(.system(size: 16))
+//                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+//                                .padding(.leading, 6)
+//                        }
+////                        .padding(.bottom, 4)
+//                        .padding(.vertical, 2) // 减少上下空间
+//
+////                        // 原本的alignment
+////                        HStack {
+////                            Text(questions[index].2)
+////                                .font(.system(size: 18))
+////                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+////                            Spacer()
+////                            Text(questions[index].3)
+////                                .font(.system(size: 18))
+////                                .foregroundStyle(Color(.darkGray).opacity(0.9))
+////                        }
+////
+////                        .overlay(
+////                            
+////                            // 扁平的长方形按钮
+////                            
+////                            HStack(spacing: 10) {
+//////                                Spacer().frame(height: 2)
+////                                
+////                                ForEach(1...5, id: \.self) { value in
+////                                    
+////                                    Button(action: {
+////                                        selectedAnswers[questions[index].0] = value
+////                                    }) {
+////                                        Text("\(value)")
+////                                            .font(.system(size: 18, weight: .bold))
+////                                            .frame(width: 110, height: 30) // 调整按钮大小
+////                                            .background(selectedAnswers[questions[index].0] == value ?
+////                                                Color(red: 0.4, green: 0.5, blue: 0.7) : // 选中状态的蓝灰色
+////                                                Color(red: 0.7, green: 0.75, blue: 0.85) // 未选中状态的浅蓝灰色
+////                                            )
+//////                                            .background(selectedAnswers[questions[index].0] == value ? Color.blue.opacity(0.9) : Color.blue.opacity(0.3)) // 选中和未选中的颜色
+////                                            .foregroundColor(.white)
+////                                            .cornerRadius(8) // 设置圆角
+////                                    }
+////                                    Spacer().frame(width: 25)
+////                                    
+////
+////                                }
+////                            }
+////                            .padding(.bottom, 10) // 让按钮组下方有空隙
+////                        )
+////                    // 原本的alignment
+//   
+//                    }
+//                    .padding()
+//                    .frame(maxWidth: .infinity)          // ✅ 强制撑满父容器
+//                    .background(Color(.systemGray6))
+//                    .cornerRadius(10)
+//                    .padding(.horizontal, 20)            // ✅ 给卡片左右留出边距
+//                    .padding(.bottom, 10)
+//                    
+                    
+                    
+                    
+//                    .padding(16)
+//                    .background(...)
+//                    .cornerRadius(12)
+//                    .frame(maxWidth: .infinity)
+
+//                    .padding()
+//                    .background(Color(.systemGray6))
+//                    .cornerRadius(10)
+//                    .padding(.bottom, 10)
+////                    .frame(maxWidth: 600)
+//                    .frame(maxWidth: .infinity)
+
                 }
             }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 20) // ✅ 放在这里统一控制左右边距
+//            .padding(.top, 10)
             
 //            Button("Submit") {
 //                // 提交逻辑
@@ -173,17 +330,20 @@ struct QuestionnaireScreen: View {
                 submitQuestions()
                 logger.debug("Submitted answers of questionnaire")
                 
-                webRTCModel.disconnect()  //先不断开
+                webRTCModel.disconnect()  // 先不断开
 //                webRTCModel.finalValue = nil
 //                qnScaleModel.finalValue = nil
                 
 //                routeModel.pop()
-                routeModel.pushReplaceTop(.welcome)
+//                routeModel.pushReplaceTop(.welcome)
                 
                 
                 // 跳转到欢迎页（避免 push 时键盘还在 → 崩溃）
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    routeModel.pushReplaceTop(.welcome)
+//                    routeModel.pushReplaceTop(.welcome)
+                    routeModel.pop() // 清空所有导航，回到首页
+//                    routeModel.push(.welcome)
+
                 }
                 
             }
