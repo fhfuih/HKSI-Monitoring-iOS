@@ -1,15 +1,6 @@
 {
-  "originHash" : "22a4a447420bfea32bb5c3f74c2dc5316530e6981ee2c910581f6d64465bfdba",
+  "originHash" : "d7ffd5a93292c9c495cd110e41c028cef8c7b1d6b7f697554f6f59f15253a269",
   "pins" : [
-    {
-      "identity" : "observableuserdefault",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/davidsteppenbeck/ObservableUserDefault",
-      "state" : {
-        "revision" : "d0d9f23666f699857cabf08d558d3000dc3e9713",
-        "version" : "1.3.1"
-      }
-    },
     {
       "identity" : "swift-dotenv",
       "kind" : "remoteSourceControl",
@@ -17,24 +8,6 @@
       "state" : {
         "revision" : "f6e7ca817d35eeccb20b62c87ee75963b01b29dc",
         "version" : "2.0.1"
-      }
-    },
-    {
-      "identity" : "swift-syntax",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax.git",
-      "state" : {
-        "revision" : "303e5c5c36d6a558407d364878df131c3546fad8",
-        "version" : "510.0.2"
-      }
-    },
-    {
-      "identity" : "withings-sdk-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/withings-sdk/withings-sdk-ios.git",
-      "state" : {
-        "revision" : "211bbb9c5fe7ff1e558e7ede17957e0c5ae5e608",
-        "version" : "4.1.0"
       }
     }
   ],

@@ -9,7 +9,6 @@
 import Foundation
 import SwiftUI
 import os.log
-import ObservableUserDefault
 
 //fileprivate let qnAppId = "XGKJ202410"
 //fileprivate let qnConfigFileName = "XGKJ202410"
@@ -135,7 +134,9 @@ class QNScaleModel: NSObject {
         }
     }
     
-    /// This function is intended to be used on `WelcomeScreen`
+    /// This function is intended to be used on `WelcomeScreen`.
+    /// It tries to connect to the scale, abort with a timeout of 8 seconds.
+    /// It throws `QNError.missingSelectedDevice` and `waitSelectedDeviceTimeout`.
     func waitForSelectedDevice() async throws -> Void {
         if self.selectedDevice == nil {
             throw QNError.missingSelectedDevice
@@ -189,8 +190,8 @@ class QNScaleModel: NSObject {
         logger.debug("QNScaleModel waitForSelectedDevice discovered selected device")
         /// ====== ======
         
+        /// Theoretically we cannot get here. But just in case `selectedDevice` is changed when we are waiting for devices
         guard let selectedDevice else {
-            /// Theoretically we cannot get here. But just in case `selectedDevice` is changed when we are waiting for devices
             throw QNError.missingSelectedDevice
         }
         try await connectDevice(selectedDevice.mac)

@@ -362,9 +362,10 @@ class WebRTCClient: NSObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         let (data, response) = try await URLSession.shared.data(for: request)
+        let statusCode = (response as! HTTPURLResponse).statusCode
         
-        if (response as! HTTPURLResponse).statusCode >= 400 {
-            logger.error("Error when requesting signaling server: \(String(data: data, encoding: .utf8) ?? "unknown response")")
+        if statusCode >= 400 {
+            logger.error("Error when requesting signaling server: (\(statusCode)) \(String(data: data, encoding: .utf8) ?? "unknown response")")
             throw WebRTCError.connection
         }
         

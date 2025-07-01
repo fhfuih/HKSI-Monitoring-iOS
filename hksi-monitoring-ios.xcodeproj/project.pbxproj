@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C368EA22D5C2E7E001803C7 /* Withings in Frameworks */ = {isa = PBXBuildFile; productRef = 0C368EA12D5C2E7E001803C7 /* Withings */; };
 		0C44CD562D80CED70051290C /* QuestionnaireScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C44CD552D80CEC50051290C /* QuestionnaireScreen.swift */; };
 		0C4CF8782D925D18006C987B /* HistoryResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4CF8772D925CDE006C987B /* HistoryResultScreen.swift */; };
 		4BC68348C1092FBCE2297E31 /* Pods_hksi_monitoring_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */; };
@@ -22,7 +21,6 @@
 		F30F655A2C5391C20060EA56 /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65522C5391C20060EA56 /* CameraModel.swift */; };
 		F30F655E2C5391C20060EA56 /* RouteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65562C5391C20060EA56 /* RouteModel.swift */; };
 		F30F65602C53928B0060EA56 /* QNScaleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F655F2C53928B0060EA56 /* QNScaleModel.swift */; };
-		F30F65642C5393050060EA56 /* ObservableUserDefault in Frameworks */ = {isa = PBXBuildFile; productRef = F30F65632C5393050060EA56 /* ObservableUserDefault */; };
 		F30F656F2C53940F0060EA56 /* SwiftDotenv in Frameworks */ = {isa = PBXBuildFile; productRef = F30F656E2C53940F0060EA56 /* SwiftDotenv */; };
 		F30F65762C5394A60060EA56 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65702C5394A60060EA56 /* CameraView.swift */; };
 		F30F65772C5394A60060EA56 /* FeatureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F65712C5394A60060EA56 /* FeatureIcon.swift */; };
@@ -56,6 +54,7 @@
 		A5EF6FB051CD48D2C5AEE522 /* Pods_hksi_monitoring_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hksi_monitoring_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7315ED3CFB9D595702F694 /* Pods-hksi-monitoring-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hksi-monitoring-ios.debug.xcconfig"; path = "Target Support Files/Pods-hksi-monitoring-ios/Pods-hksi-monitoring-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		F3065C712C9DD78E00B442AA /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		F30F285D2E14099800765289 /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
 		F30F65102C5389590060EA56 /* HKSI Booth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HKSI Booth.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F30F65132C5389590060EA56 /* hksi_monitoring_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hksi_monitoring_iosApp.swift; sourceTree = "<group>"; };
 		F30F65192C53895A0060EA56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -132,10 +131,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F30F65482C538A630060EA56 /* libQNDeviceSDK.a in Frameworks */,
-				0C368EA22D5C2E7E001803C7 /* Withings in Frameworks */,
 				4BC68348C1092FBCE2297E31 /* Pods_hksi_monitoring_ios.framework in Frameworks */,
 				F30F656F2C53940F0060EA56 /* SwiftDotenv in Frameworks */,
-				F30F65642C5393050060EA56 /* ObservableUserDefault in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +150,7 @@
 		F30F65072C5389590060EA56 = {
 			isa = PBXGroup;
 			children = (
+				F30F285D2E14099800765289 /* .swift-format */,
 				F30F654E2C538F560060EA56 /* README.md */,
 				F30F65232C538A390060EA56 /* QNSDK */,
 				F30F65122C5389590060EA56 /* hksi-monitoring-ios */,
@@ -353,9 +351,7 @@
 			);
 			name = "hksi-monitoring-ios";
 			packageProductDependencies = (
-				F30F65632C5393050060EA56 /* ObservableUserDefault */,
 				F30F656E2C53940F0060EA56 /* SwiftDotenv */,
-				0C368EA12D5C2E7E001803C7 /* Withings */,
 			);
 			productName = "hksi-monitoring-ios";
 			productReference = F30F65102C5389590060EA56 /* HKSI Booth.app */;
@@ -386,9 +382,7 @@
 			);
 			mainGroup = F30F65072C5389590060EA56;
 			packageReferences = (
-				F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */,
 				F30F65652C5393160060EA56 /* XCRemoteSwiftPackageReference "swift-dotenv" */,
-				0C368EA02D5C2E7E001803C7 /* XCRemoteSwiftPackageReference "withings-sdk-ios" */,
 			);
 			productRefGroup = F30F65112C5389590060EA56 /* Products */;
 			projectDirPath = "";
@@ -749,22 +743,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0C368EA02D5C2E7E001803C7 /* XCRemoteSwiftPackageReference "withings-sdk-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/withings-sdk/withings-sdk-ios.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.0;
-			};
-		};
-		F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/davidsteppenbeck/ObservableUserDefault";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.1;
-			};
-		};
 		F30F65652C5393160060EA56 /* XCRemoteSwiftPackageReference "swift-dotenv" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/thebarndog/swift-dotenv";
@@ -776,16 +754,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0C368EA12D5C2E7E001803C7 /* Withings */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0C368EA02D5C2E7E001803C7 /* XCRemoteSwiftPackageReference "withings-sdk-ios" */;
-			productName = Withings;
-		};
-		F30F65632C5393050060EA56 /* ObservableUserDefault */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F30F65622C5393050060EA56 /* XCRemoteSwiftPackageReference "ObservableUserDefault" */;
-			productName = ObservableUserDefault;
-		};
 		F30F656E2C53940F0060EA56 /* SwiftDotenv */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F30F65652C5393160060EA56 /* XCRemoteSwiftPackageReference "swift-dotenv" */;

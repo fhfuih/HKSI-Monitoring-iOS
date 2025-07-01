@@ -333,17 +333,10 @@ struct QuestionnaireScreen: View {
                 webRTCModel.disconnect()  // 先不断开
 //                webRTCModel.finalValue = nil
 //                qnScaleModel.finalValue = nil
-                
-//                routeModel.pop()
-//                routeModel.pushReplaceTop(.welcome)
-                
-                
+
                 // 跳转到欢迎页（避免 push 时键盘还在 → 崩溃）
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                    routeModel.pushReplaceTop(.welcome)
                     routeModel.pop() // 清空所有导航，回到首页
-//                    routeModel.push(.welcome)
-
                 }
                 
             }

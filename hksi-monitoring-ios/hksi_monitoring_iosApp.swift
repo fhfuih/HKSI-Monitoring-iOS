@@ -51,10 +51,10 @@ struct hksi_monitoring_iosApp: App {
               ResultScreen()
             case .historyresult:
               HistoryResultScreen()
-                
             case .questionnaire:
                 QuestionnaireScreen()
-        
+            case .welcome:
+                Text("If you see this screen, it means you are trying to create a new WelcomeScreen on top of the navigation stack. You should not do so. You should pop everything on the stack because the bottom-most page is the WelcomeScreen.")
             /// Please ignore the following warning
             @unknown default:
               Text("Internal error")
