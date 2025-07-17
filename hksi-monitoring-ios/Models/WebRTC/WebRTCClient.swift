@@ -21,9 +21,14 @@ class WebRTCClient: NSObject {
     private var peerConnection: RTCPeerConnection?
     
     /// NOTE: the iOS WebRTC library doesn't include any ICE candidate when generating offer SDP.
-    /// I wanted to facilitate the ICE process by appending every
-    private var iceCandidateCache: [String] = []
-    
+    /// It seems to assume every candidate is later notified by trickling.
+    /// I wanted to facilitate the ICE process by appending every previously discovered ICE to the initial offer SDP.
+    /// But I found that this doesn't solve the problem (under some network, WebRTC connection cannot establish)
+    /// Plus I didn't implement a mechanism to clear this cache list.
+    /// So if a user keeps connecting & failing, this list will be filled with multiple copies of the same ICE candidates (-> memory leak)
+    /// So I'll just comment it out (but keep my trial & error log here)
+//    private var iceCandidateCache: [String] = []
+
     private var localVideoTrack: RTCVideoTrack!
     private var localAudioTrack: RTCAudioTrack!
     private var remoteStream: RTCMediaStream?
@@ -388,10 +393,11 @@ class WebRTCClient: NSObject {
             throw WebRTCError.notImplementedError("Must make and send `offer` SDP, not answer")
         }
 
-        let sdpData = SDPMessageData(
-            sdp: sessionDescription.sdp.appending(self.iceCandidateCache.joined(separator: "\r\n")),
-            type: "offer"
-        )
+//        let sdpData = SDPMessageData(
+//            sdp: sessionDescription.sdp.appending(self.iceCandidateCache.joined(separator: "\r\n")),
+//            type: "offer"
+//        )
+        let sdpData = SDPMessageData(sdp: sessionDescription.sdp, type: "offer")
         let outboundMessage = SDPMessage(type: "offer", data: sdpData)
 
         let answerSDP = try await signalingClient.sendSDPMessage(outboundMessage)
@@ -528,7 +534,7 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
     {
         logger.debug("ICE candidate found: \(candidate.sdp)")
         
-        self.iceCandidateCache.append("a=\(candidate.sdp)")
+//        self.iceCandidateCache.append("a=\(candidate.sdp)")
 
         // Send via WebSocket
         Task {
