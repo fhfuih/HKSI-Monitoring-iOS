@@ -99,8 +99,10 @@ class WebRTCModel {
     
     func connect() async throws {
         guard !webRTCClient.isConnected else { return }
-        webRTCClient.signalingServer = URL(string: signalingServer.trimmingCharacters(in: .whitespacesAndNewlines))
-        try await webRTCClient.connect()
+        guard let signalingServerURL = URL(string: signalingServer.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+            throw WebRTCError.malformedSignalingServerURL
+        }
+        try await webRTCClient.connect(signalingServerURL)
     }
     
     func disconnect() {

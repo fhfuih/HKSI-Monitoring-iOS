@@ -119,7 +119,7 @@ final class CameraModel {
     }
 
     private func startCameraPreviewImageUpdate() async {
-        let imageStream = camera.previewImageStream.map { $0.image }
+        let imageStream = camera.previewImageStream.map { ciImageToImage($0) }
 
         for await image in imageStream {
             Task { @MainActor in
@@ -143,7 +143,7 @@ final class CameraModel {
         
         for await pixelBuffer in pixelBufferToUploadStream {
             webRTCModel?.didOutput(pixelBuffer)
-            cameraDebugPreviewUploadingImage = CIImage(cvPixelBuffer: pixelBuffer).image
+            cameraDebugPreviewUploadingImage = ciImageToImage(CIImage(cvPixelBuffer: pixelBuffer))
         }
     }
     
@@ -219,13 +219,13 @@ fileprivate struct PhotoData {
     var imageSize: (width: Int, height: Int)
 }
 
-fileprivate extension CIImage {
-    var image: Image? {
-        let ciContext = CIContext()
-        guard let cgImage = ciContext.createCGImage(self, from: self.extent) else { return nil }
-        return Image(decorative: cgImage, scale: 1, orientation: .up)
-    }
-}
+//fileprivate extension CIImage {
+//    var image: Image? {
+//        let ciContext = CIContext()
+//        guard let cgImage = ciContext.createCGImage(self, from: self.extent) else { return nil }
+//        return Image(decorative: cgImage, scale: 1, orientation: .up)
+//    }
+//}
 
 fileprivate extension Image.Orientation {
     init(_ cgImageOrientation: CGImagePropertyOrientation) {

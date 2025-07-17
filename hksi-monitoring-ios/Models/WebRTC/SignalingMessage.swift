@@ -6,20 +6,50 @@
 //  Copyright © 2019 n0. All rights reserved.
 //
 
-import Foundation
-
+/// `type` must be `offer` or `answer`
 struct SDPMessage: Codable {
     let type: String
-    let sdp: String
+    let data: SDPMessageData
 }
 
-struct CandidateMessage: Codable {
+/// `type` must be `ice-candidate`
+struct IceCandidateMessage: Codable {
     let type: String
-    let candidate: Candidate
+    let data: IceCandidateMessageData
 }
 
-struct Candidate: Codable {
+/// `type` must be `ice-server`
+struct IceServerMessage: Codable {
+    let type: String
+    let data: [IceServer]
+}
+
+/// `type` must be `error` or `success`
+struct ResponseMessage: Codable {
+    let type: String
+    let data: ErrorMessageData?
+}
+
+/// ------
+
+struct SDPMessageData: Codable {
+    let sdp: String
+    let type: String
+}
+
+struct IceCandidateMessageData: Codable {
     let sdp: String
     let sdpMLineIndex: Int32
-    let sdpMid: String
+    let sdpMid: String?
+}
+
+struct IceServer: Codable {
+    let urls: [String]
+    let username: String?
+    let credential: String?
+}
+
+struct ErrorMessageData: Codable {
+    let message: String
+    let code: Int
 }

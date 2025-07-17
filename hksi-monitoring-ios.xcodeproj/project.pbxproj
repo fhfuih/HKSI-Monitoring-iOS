@@ -43,6 +43,8 @@
 		F30F659B2C56017F0060EA56 /* WebRTCTestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30F659A2C56017F0060EA56 /* WebRTCTestScreen.swift */; };
 		F358DCE02CA19EAE00093389 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = F358DCDF2CA19EAE00093389 /* ButtonStyles.swift */; };
 		F392260F2CBA840F001B7B68 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F392260E2CBA840F001B7B68 /* Errors.swift */; };
+		F39ABDBE2E29307B0029D10A /* SignalingServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39ABDBD2E29307B0029D10A /* SignalingServerClient.swift */; };
+		F39ABDC22E29589B0029D10A /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39ABDC12E2958960029D10A /* Images.swift */; };
 		F3E6E2C52CBD17DB00E2BA4C /* test123456789.qn in Resources */ = {isa = PBXBuildFile; fileRef = F3E6E2C32CBD17DB00E2BA4C /* test123456789.qn */; };
 		F3E6E2C62CBD17DB00E2BA4C /* XGKJ202410.qn in Resources */ = {isa = PBXBuildFile; fileRef = F3E6E2C42CBD17DB00E2BA4C /* XGKJ202410.qn */; };
 /* End PBXBuildFile section */
@@ -121,6 +123,8 @@
 		F30F659A2C56017F0060EA56 /* WebRTCTestScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCTestScreen.swift; sourceTree = "<group>"; };
 		F358DCDF2CA19EAE00093389 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		F392260E2CBA840F001B7B68 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		F39ABDBD2E29307B0029D10A /* SignalingServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalingServerClient.swift; sourceTree = "<group>"; };
+		F39ABDC12E2958960029D10A /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		F3E6E2C32CBD17DB00E2BA4C /* test123456789.qn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test123456789.qn; sourceTree = "<group>"; };
 		F3E6E2C42CBD17DB00E2BA4C /* XGKJ202410.qn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XGKJ202410.qn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -285,6 +289,7 @@
 			children = (
 				F30F657E2C5394B20060EA56 /* Environments.swift */,
 				F30F657F2C5394B20060EA56 /* Logger.swift */,
+				F39ABDC12E2958960029D10A /* Images.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -306,6 +311,7 @@
 		F30F658D2C55CB190060EA56 /* WebRTC */ = {
 			isa = PBXGroup;
 			children = (
+				F39ABDBD2E29307B0029D10A /* SignalingServerClient.swift */,
 				F30F658F2C55CB450060EA56 /* RTCCustomFrameCapture.swift */,
 				F30F65982C55DA9C0060EA56 /* SignalingMessage.swift */,
 				F30F65912C55CB460060EA56 /* RTCSimluatorVideoEncoderFactory.swift */,
@@ -460,6 +466,7 @@
 				F30F65922C55CB460060EA56 /* RTCSimulatorVideoDecoderFactory.swift in Sources */,
 				F30F658B2C5394B20060EA56 /* SettingsScreen.swift in Sources */,
 				F30F65972C55D1940060EA56 /* WebRTCModel.swift in Sources */,
+				F39ABDBE2E29307B0029D10A /* SignalingServerClient.swift in Sources */,
 				F30F65772C5394A60060EA56 /* FeatureIcon.swift in Sources */,
 				F3065C722C9DD78E00B442AA /* DataModel.swift in Sources */,
 				F30F65892C5394B20060EA56 /* ResultScreen.swift in Sources */,
@@ -474,6 +481,7 @@
 				F30F655E2C5391C20060EA56 /* RouteModel.swift in Sources */,
 				F30F65992C55DA9C0060EA56 /* SignalingMessage.swift in Sources */,
 				F30F65932C55CB460060EA56 /* RTCCustomFrameCapture.swift in Sources */,
+				F39ABDC22E29589B0029D10A /* Images.swift in Sources */,
 				0C4CF8782D925D18006C987B /* HistoryResultScreen.swift in Sources */,
 				F30F658A2C5394B20060EA56 /* ScanningScreen.swift in Sources */,
 				F30F65142C5389590060EA56 /* hksi_monitoring_iosApp.swift in Sources */,

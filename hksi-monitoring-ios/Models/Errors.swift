@@ -16,6 +16,7 @@ enum QNError: Error {
 }
 
 enum WebRTCError: Error {
+    case malformedSignalingServerURL
     case missingSignalingServer
     case connection
     case missingPeerConnection
@@ -27,4 +28,14 @@ enum WebRTCError: Error {
     case setRemoteAnswerSDP
     case connectionTimeout
     case connectionError
+    case notImplementedError(String)
+    case internalError(String)
+}
+
+enum WebRTCSignalingServerError: Error {
+    case errorResponse(Int?, String?)
+    case tooManyIceCandidates
+    case connection
+    case unsupportedMessage(String?)
+    case internalError(String)
 }
